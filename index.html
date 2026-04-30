@@ -6,14 +6,15 @@
 <meta name="description" content="Liquidador de nómina Colombia 2026 — Ley 2101/2021 · Ley 2381/2024 · Decreto 2613/2025. Turnos rotativos, recargos nocturnos, exportación PDF.">
 <meta name="robots" content="index, follow">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
-<title>NóminaFlow · Liquidador de Nómina Colombia 2026</title>
+<title>Nómina · Colombia 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-
-
+/* ══════════════════════════════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 15px; scroll-behavior: smooth; }
 
@@ -999,14 +1000,201 @@ input[type="datetime-local"] {
 .modal-btns { display: flex; gap: 0.75rem; justify-content: center; }
 
 /* ══════════════════════════════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE — Mobile-first, cubre todos los breakpoints
+   xs  < 400px   (phones pequeños: iPhone SE, Galaxy A)
+   sm  400–639px (phones normales)
+   md  640–859px (tablets portrait, phones landscape)
+   lg  860–1099px (tablets landscape, laptops pequeños)
+   xl  ≥1100px   (desktop — estilos base ya definidos arriba)
 ══════════════════════════════════════════════════════════════ */
-@media (max-width: 580px) {
+
+/* ── xl: asegura contenedor máximo ─────────────────────────── */
+@media (min-width: 1100px) {
+  .app-container { padding: 2rem 2rem; }
+}
+
+/* ── lg: tablets landscape / laptops ───────────────────────── */
+@media (max-width: 1099px) {
+  .main-grid { grid-template-columns: 320px 1fr; gap: 1.25rem; }
+  .app-container { padding: 1.5rem 1.25rem; }
+}
+
+/* ── md: tablet portrait / phone landscape ─────────────────── */
+@media (max-width: 859px) {
+  html { font-size: 14px; }
+
+  .main-grid { grid-template-columns: 1fr; gap: 1rem; }
+
+  /* topbar */
+  .topbar { padding: 0 1rem; }
+  .meta-chip:last-child { display: none; }        /* oculta chip fecha en tablet */
+
+  /* hero */
+  .hero-strip { padding: 1.75rem 1.25rem 2.5rem; }
+  .hero-title { font-size: 1.7rem; }
+  .hero-inner { gap: 1rem; }
+  .hero-kpis { gap: 1rem; }
+  .hero-kpi-val { font-size: 1.2rem; }
+
+  /* app container */
+  .app-container { padding: 1.25rem 1rem; }
+
+  /* neto card: num más pequeño */
+  .neto-num { font-size: 2.1rem; }
+
+  /* neto kpis: 2 columnas */
   .neto-kpis { grid-template-columns: 1fr 1fr; }
   .neto-kpi:nth-child(2n) { border-right: none; }
-  .turno-card { flex-wrap: wrap; }
-  .turno-monto { width: 100%; text-align: left; border-top: 1px dashed var(--ink-100); padding-top: 8px; margin-top: 4px; }
+  .neto-kpi:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.06); }
+
+  /* desglose footer: stack vertical */
+  .desglose-footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .footer-totals { gap: 1.25rem; }
+
+  /* turnos grid: columna única */
+  .turnos-controls { flex-direction: column; align-items: flex-start; }
+
+  /* fab */
+  .fab-wrap { bottom: 1.25rem; right: 1.25rem; }
+}
+
+/* ── sm: smartphones normales ──────────────────────────────── */
+@media (max-width: 639px) {
+  html { font-size: 14px; }
+
+  /* topbar compacto */
+  .topbar { padding: 0 0.875rem; height: 50px; }
+  .topbar-brand { font-size: 1rem; gap: 7px; }
+  .brand-dot { width: 7px; height: 7px; }
+  .meta-chip { font-size: 0.65rem; padding: 3px 8px; }
+  .meta-chip:nth-child(2) { display: none; }      /* oculta SMMLV chip en móvil */
+
+  /* hero */
+  .hero-strip { padding: 1.5rem 1rem 2.25rem; }
+  .hero-title { font-size: 1.45rem; line-height: 1.15; }
+  .hero-eyebrow { font-size: 0.62rem; }
+  .hero-sub { font-size: 0.75rem; }
+  .hero-kpis { justify-content: flex-start; gap: 1.25rem; }
+  .hero-kpi { text-align: left; }
+  .hero-kpi-val { font-size: 1.1rem; }
+  .hero-kpi-lbl { font-size: 0.62rem; }
+
+  /* contenedor */
+  .app-container { padding: 1rem 0.875rem; }
+
+  /* tabs */
+  .tabs { padding: 3px; gap: 3px; }
+  .tab-btn { font-size: 0.75rem; padding: 7px 8px; }
+
+  /* cards */
+  .card-body { padding: 1rem 1.1rem; }
+  .card-head { padding: 0.9rem 1.1rem; }
+
+  /* neto */
+  .neto-num { font-size: 1.85rem; letter-spacing: -0.02em; }
+  .neto-num .cur { font-size: 1rem; }
+  .neto-top { padding: 1.1rem; flex-wrap: wrap; gap: 0.5rem; }
+  .neto-main { padding: 0 1.1rem 1.1rem; }
+  .neto-kpis { grid-template-columns: 1fr 1fr; }
+  .neto-kpi { padding: 0.7rem 1rem; }
+  .neto-kpi:nth-child(2n) { border-right: none; }
+  .neto-kpi:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.06); }
+  .neto-kpi-val { font-size: 0.78rem; }
+  .neto-kpi-lbl { font-size: 0.58rem; }
+
+  /* desglose */
+  .desglose-head { padding: 0.875rem 1.1rem; flex-wrap: wrap; gap: 0.5rem; }
+  .acc-trigger { padding: 0.8rem 1.1rem; }
+  .acc-inner { padding: 0 1.1rem 0.6rem; }
+  .det-concept { font-size: 0.75rem; }
+  .det-val { font-size: 0.75rem; }
+  .footer-totals { gap: 1rem; width: 100%; justify-content: space-between; }
+  .ft-item-val { font-size: 0.85rem; }
+  .desglose-footer { padding: 0.875rem 1.1rem; }
+
+  /* horas grid: 2 col (ya es 2 col, mantener) */
+  .horas-grid { gap: 0.5rem; }
+  .hora-box { padding: 0.6rem; }
+  .hora-box input { height: 34px; font-size: 0.85rem; }
+
+  /* hora tag */
+  .hora-tag { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .hora-tag-left { font-size: 0.7rem; }
+  .hora-tag-val { font-size: 0.85rem; }
+
+  /* smmlv row */
+  .smmlv-row { flex-wrap: wrap; gap: 4px; }
+
+  /* turno card */
+  .turno-card { flex-wrap: wrap; padding: 0.875rem; gap: 0.75rem; }
+  .turno-monto { width: 100%; text-align: left; border-top: 1px dashed var(--ink-100); padding-top: 8px; margin-top: 0; }
+  .turno-monto-val { font-size: 0.95rem; }
+
+  /* add form */
+  .add-form-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+  .add-form-actions { flex-direction: column; }
+  .btn-confirm, .btn-cancel-form { width: 100%; justify-content: center; }
+
+  /* ciclo selector */
+  .turnos-controls { gap: 0.6rem; }
+  .ciclo-selector { flex-wrap: wrap; gap: 5px; }
+
+  /* fab */
   .fab-wrap { bottom: 1rem; right: 1rem; }
+  .fab { width: 50px; height: 50px; font-size: 20px; }
+  .fab-item { font-size: 0.75rem; padding: 8px 14px 8px 12px; }
+
+  /* modal */
+  .modal-box { padding: 1.5rem; }
+  .modal-btns { flex-direction: column; }
+  .modal-btns button { width: 100%; justify-content: center; }
+
+  /* horario fijo */
+  .hf-franjas-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .hf-franja-item input[type="time"] { height: 36px; font-size: 0.82rem; }
+  .hf-dias-grid { gap: 4px; }
+  .hf-dia-btn { padding: 5px 8px; min-width: 36px; }
+  .hf-dia-btn .dia-nom { font-size: 0.6rem; }
+  .hf-dia-btn .dia-ico { font-size: 13px; }
+}
+
+/* ── xs: teléfonos muy pequeños (< 400px) ───────────────────── */
+@media (max-width: 399px) {
+  html { font-size: 13px; }
+
+  .topbar { padding: 0 0.75rem; }
+  .topbar-brand { font-size: 0.92rem; }
+  .meta-chip { display: none; }                   /* oculta todos los chips en xs */
+  .meta-chip:first-child { display: inline-flex; } /* solo jornada */
+
+  .hero-title { font-size: 1.25rem; }
+  .hero-strip { padding: 1.25rem 0.875rem 2rem; }
+  .hero-kpis { flex-direction: column; gap: 0.6rem; }
+  .hero-kpi { text-align: left; }
+
+  .app-container { padding: 0.875rem 0.75rem; }
+
+  .neto-num { font-size: 1.6rem; }
+  .neto-kpis { grid-template-columns: 1fr 1fr; }
+  .neto-kpi { padding: 0.6rem 0.75rem; }
+
+  .tabs { border-radius: var(--r-md); }
+  .tab-btn { font-size: 0.7rem; padding: 6px 6px; }
+
+  /* quincena label trunca en xs */
+  .quincena-label { font-size: 0.62rem; letter-spacing: 0.04em; }
+
+  /* horas grid: 1 col en xs */
+  .horas-grid { grid-template-columns: 1fr; }
+
+  /* hf franjas: 1 col en xs */
+  .hf-franjas-grid { grid-template-columns: 1fr; }
+
+  /* footer totals vertical */
+  .footer-totals { flex-direction: column; gap: 0.6rem; }
+
+  .fab { width: 46px; height: 46px; font-size: 18px; }
+  .fab-wrap { bottom: 0.875rem; right: 0.875rem; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1238,7 +1426,7 @@ input[type="datetime-local"] {
 <nav class="topbar">
   <div class="topbar-brand">
     <div class="brand-dot"></div>
-    NóminaFlow
+    Nómina
   </div>
   <div class="topbar-meta">
     <span class="meta-chip active" id="chipJornada">44h/sem</span>
@@ -2492,7 +2680,7 @@ function generarPDF() {
   doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
   doc.text('DESPRENDIBLE DE PAGO', 14, 16);
   doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,150);
-  doc.text('NóminaFlow · Colombia 2026 · Legislación CST + Ley 2381/2024', 14, 22);
+  doc.text('Nómina · Colombia 2026 · Legislación CST + Ley 2381/2024', 14, 22);
   doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(200,200,255);
   doc.text(`Período: ${perLabel}`, 14, 33);
   doc.text(`Jornada: ${R.horas}h/semana (Ley 2101/2021)`, W - 14, 33, { align:'right' });
@@ -2659,7 +2847,7 @@ function exportarExcel() {
   const sal2 = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
 
   let csv = 'sep=;\n';
-  csv += `NOMINA FLOW - DESPRENDIBLE DE PAGO;;\n`;
+  csv += `NÓMINA · COLOMBIA 2026;;\n`;
   csv += `Empleado;${nombre};;\n`;
   csv += `Cargo;${cargo};;\n`;
   csv += `Período;${perLabel};;\n`;
