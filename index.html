@@ -1,0 +1,2952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Liquidador de nómina Colombia 2026 — Ley 2101/2021 · Ley 2381/2024 · Decreto 2613/2025. Turnos rotativos, recargos nocturnos, exportación PDF.">
+<meta name="robots" content="index, follow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<title>NóminaFlow · Liquidador de Nómina Colombia 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+
+:root {
+  /* Palette */
+  --ink-950: #09090f;
+  --ink-900: #111118;
+  --ink-800: #1c1c27;
+  --ink-700: #252534;
+  --ink-600: #32324a;
+  --ink-500: #4a4a6a;
+  --ink-400: #6b6b90;
+  --ink-300: #9090b8;
+  --ink-200: #c0c0d8;
+  --ink-100: #e8e8f2;
+  --ink-50:  #f4f4fa;
+
+  --violet-600: #7c3aed;
+  --violet-500: #8b5cf6;
+  --violet-400: #a78bfa;
+  --violet-100: #ede9fe;
+  --violet-50:  #f5f3ff;
+
+  --teal-600:  #0d9488;
+  --teal-500:  #14b8a6;
+  --teal-400:  #2dd4bf;
+  --teal-100:  #ccfbf1;
+  --teal-50:   #f0fdfa;
+
+  --amber-600: #d97706;
+  --amber-500: #f59e0b;
+  --amber-400: #fbbf24;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --rose-600:  #e11d48;
+  --rose-500:  #f43f5e;
+  --rose-400:  #fb7185;
+  --rose-100:  #ffe4e6;
+  --rose-50:   #fff1f2;
+
+  --emerald-600: #059669;
+  --emerald-500: #10b981;
+  --emerald-400: #34d399;
+  --emerald-100: #d1fae5;
+  --emerald-50:  #ecfdf5;
+
+  /* Radii */
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  16px;
+  --r-xl:  22px;
+  --r-2xl: 32px;
+
+  /* Shadows */
+  --s-sm: 0 1px 3px rgba(9,9,15,0.1), 0 1px 2px rgba(9,9,15,0.08);
+  --s-md: 0 4px 16px rgba(9,9,15,0.08), 0 2px 6px rgba(9,9,15,0.06);
+  --s-lg: 0 10px 40px rgba(9,9,15,0.12), 0 4px 14px rgba(9,9,15,0.08);
+  --s-glow-v: 0 0 0 3px rgba(139,92,246,0.18);
+  --s-glow-t: 0 0 0 3px rgba(20,184,166,0.18);
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--ink-50);
+  color: var(--ink-800);
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TOPBAR / HERO
+══════════════════════════════════════════════════════════════ */
+.topbar {
+  background: var(--ink-950);
+  padding: 0 2rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid var(--ink-800);
+}
+
+.topbar-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: white;
+  letter-spacing: -0.02em;
+}
+
+.brand-dot {
+  width: 8px; height: 8px;
+  background: var(--teal-400);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--teal-400);
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.85); }
+}
+
+.topbar-meta {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.meta-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-700);
+  color: var(--ink-300);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.meta-chip.active {
+  background: rgba(20,184,166,0.12);
+  border-color: rgba(20,184,166,0.3);
+  color: var(--teal-400);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO STRIP
+══════════════════════════════════════════════════════════════ */
+.hero-strip {
+  background: linear-gradient(135deg, var(--ink-900) 0%, var(--ink-800) 60%, #1a1040 100%);
+  padding: 2.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-strip::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 80%, rgba(124,58,237,0.2) 0%, transparent 45%),
+    radial-gradient(circle at 90% 20%, rgba(20,184,166,0.15) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.hero-strip::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0; height: 40px;
+  background: var(--ink-50);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.hero-left {}
+
+.hero-eyebrow {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--teal-400);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.hero-title span { color: var(--violet-400); }
+
+.hero-sub {
+  font-size: 0.82rem;
+  color: var(--ink-400);
+  margin-top: 0.5rem;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.hero-kpis {
+  display: flex; gap: 1.5rem; flex-wrap: wrap;
+}
+
+.hero-kpi {
+  text-align: right;
+}
+
+.hero-kpi-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  line-height: 1;
+}
+
+.hero-kpi-val.teal { color: var(--teal-400); }
+.hero-kpi-val.violet { color: var(--violet-400); }
+
+.hero-kpi-lbl {
+  font-size: 0.68rem;
+  color: var(--ink-400);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════════════════════════════ */
+.app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 1.6rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════════════ */
+.card {
+  background: white;
+  border-radius: var(--r-xl);
+  box-shadow: var(--s-md);
+  border: 1px solid var(--ink-100);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.card:last-child { margin-bottom: 0; }
+
+.card-head {
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--ink-100);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-head-left {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.card-ico {
+  width: 30px; height: 30px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.card-ico.v { background: var(--violet-100); }
+.card-ico.t { background: var(--teal-100); }
+.card-ico.a { background: var(--amber-100); }
+.card-ico.r { background: var(--rose-100); }
+
+.card-ttl {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-700);
+  font-family: 'Syne', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.card-body { padding: 1.25rem 1.4rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   FORM CONTROLS
+══════════════════════════════════════════════════════════════ */
+.fg { margin-bottom: 1rem; }
+.fg:last-child { margin-bottom: 0; }
+
+.fg label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-400);
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+select {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1.5px solid var(--ink-200);
+  border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink-800);
+  background: var(--ink-50);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--violet-500);
+  box-shadow: var(--s-glow-v);
+  background: white;
+}
+
+input[type="datetime-local"] {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+}
+
+.prefix-wrap { position: relative; }
+.prefix-sym {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--ink-400);
+  pointer-events: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+.prefix-wrap input { padding-left: 28px; }
+
+.smmlv-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 5px;
+}
+.smmlv-hint-txt { font-size: 0.72rem; color: var(--ink-400); }
+.smmlv-hint-txt strong { color: var(--violet-500); font-family: 'JetBrains Mono', monospace; }
+
+.btn-ghost-sm {
+  font-size: 0.68rem; font-weight: 700;
+  color: var(--violet-600);
+  background: var(--violet-50);
+  border: 1px solid var(--violet-100);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background 0.12s;
+  white-space: nowrap;
+}
+.btn-ghost-sm:hover { background: var(--violet-100); }
+
+/* ══════════════════════════════════════════════════════════════
+   JORNADA ALERT
+══════════════════════════════════════════════════════════════ */
+.jornada-alert {
+  display: flex; gap: 10px;
+  background: var(--amber-50);
+  border: 1px solid var(--amber-100);
+  border-left: 3px solid var(--amber-400);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+  font-size: 0.78rem;
+  color: var(--amber-600);
+  line-height: 1.5;
+}
+.jornada-alert strong { font-weight: 700; color: var(--amber-600); }
+
+/* ══════════════════════════════════════════════════════════════
+   HORA INFO TAG
+══════════════════════════════════════════════════════════════ */
+.hora-tag {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--ink-50);
+  border: 1px solid var(--ink-100);
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+  margin-top: 0.75rem;
+}
+.hora-tag-left { font-size: 0.75rem; color: var(--ink-400); }
+.hora-tag-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem; font-weight: 600;
+  color: var(--ink-700);
+}
+
+/* Auxilio badge */
+.auxilio-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--emerald-50); border: 1px solid var(--emerald-100);
+  color: var(--emerald-600); font-size: 0.72rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 999px; margin-top: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HORAS EXTRA GRID
+══════════════════════════════════════════════════════════════ */
+.horas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.hora-box {
+  background: var(--ink-50);
+  border: 1.5px solid var(--ink-100);
+  border-radius: var(--r-md);
+  padding: 0.75rem;
+  transition: border-color 0.15s;
+}
+.hora-box:focus-within { border-color: var(--violet-400); }
+
+.hora-box label {
+  display: flex; align-items: center; gap: 5px;
+  margin-bottom: 5px;
+}
+
+.recargo-pill {
+  font-size: 0.62rem; font-weight: 700;
+  padding: 2px 6px; border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.rp-ed  { background: var(--amber-100); color: var(--amber-600); }
+.rp-en  { background: var(--violet-100); color: var(--violet-600); }
+.rp-n   { background: var(--ink-100); color: var(--ink-600); }
+.rp-d   { background: var(--teal-100); color: var(--teal-600); }
+
+.hora-box input { height: 36px; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+
+/* ══════════════════════════════════════════════════════════════
+   NETO CARD (resumen principal)
+══════════════════════════════════════════════════════════════ */
+.neto-card {
+  background: var(--ink-950);
+  border-radius: var(--r-xl);
+  box-shadow: var(--s-lg);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.neto-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(124,58,237,0.25) 0%, transparent 50%),
+    radial-gradient(circle at 85% 15%, rgba(20,184,166,0.15) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.neto-top {
+  padding: 1.5rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  position: relative; z-index: 1;
+}
+
+.neto-emp-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: white;
+}
+.neto-emp-cargo { font-size: 0.78rem; color: var(--ink-400); margin-top: 2px; }
+
+.neto-periodo-badge {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--ink-300);
+  font-size: 0.75rem; font-family: 'JetBrains Mono', monospace;
+  padding: 5px 12px; border-radius: var(--r-md);
+}
+
+.neto-main {
+  padding: 0 1.5rem 1.5rem;
+  position: relative; z-index: 1;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.neto-lbl {
+  font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ink-500); font-weight: 600;
+}
+.neto-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.6rem; font-weight: 600;
+  color: white; line-height: 1;
+  letter-spacing: -0.03em;
+  margin-top: 4px;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.neto-num .cur { font-size: 1.2rem; color: var(--ink-500); margin-right: 3px; }
+.neto-smmlv-ratio { font-size: 0.75rem; color: var(--ink-500); margin-top: 6px; }
+.neto-smmlv-ratio em { color: var(--teal-400); font-style: normal; font-weight: 600; }
+
+.neto-kpis {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  position: relative; z-index: 1;
+}
+.neto-kpi {
+  padding: 0.9rem 1.25rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.neto-kpi:last-child { border-right: none; }
+.neto-kpi-lbl {
+  font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--ink-500); margin-bottom: 3px;
+}
+.neto-kpi-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem; font-weight: 600;
+  color: white;
+  transition: all 0.25s;
+}
+.neto-kpi-val.pos { color: var(--teal-400); }
+.neto-kpi-val.neg { color: var(--rose-400); }
+.neto-kpi-val.dim { color: var(--ink-300); }
+
+/* ══════════════════════════════════════════════════════════════
+   ACCORDION DESGLOSE
+══════════════════════════════════════════════════════════════ */
+.desglose-card {
+  background: white;
+  border-radius: var(--r-xl);
+  box-shadow: var(--s-md);
+  border: 1px solid var(--ink-100);
+  overflow: hidden;
+}
+
+.desglose-head {
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--ink-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.acc-section { border-bottom: 1px solid var(--ink-100); }
+.acc-section:last-child { border-bottom: none; }
+
+.acc-trigger {
+  width: 100%; background: none; border: none;
+  padding: 0.9rem 1.4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; text-align: left;
+  transition: background 0.12s;
+}
+.acc-trigger:hover { background: var(--ink-50); }
+
+.acc-trig-l { display: flex; align-items: center; gap: 10px; }
+.acc-badge {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+
+.acc-name { font-size: 0.84rem; font-weight: 600; color: var(--ink-700); }
+.acc-trig-r { display: flex; align-items: center; gap: 12px; }
+.acc-total { font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; font-weight: 600; }
+
+.acc-arrow {
+  color: var(--ink-300); font-size: 11px;
+  transition: transform 0.22s ease;
+  display: inline-block;
+}
+.acc-section.open .acc-arrow { transform: rotate(90deg); }
+
+.acc-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.acc-section.open .acc-body { max-height: 800px; }
+.acc-inner { padding: 0 1.4rem 0.75rem; }
+
+.det-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--ink-100);
+}
+.det-row:last-child { border-bottom: none; }
+
+.det-concept { font-size: 0.8rem; color: var(--ink-500); }
+.det-concept .ref {
+  display: inline-block;
+  font-size: 0.62rem; color: var(--ink-300);
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--ink-100); padding: 1px 5px;
+  border-radius: 4px; margin-left: 5px;
+}
+.det-val { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 600; }
+.dv-green { color: var(--emerald-600); }
+.dv-red   { color: var(--rose-500); }
+.dv-blue  { color: var(--violet-600); }
+.dv-amber { color: var(--amber-600); }
+
+.desglose-footer {
+  background: var(--ink-50);
+  border-top: 1px solid var(--ink-100);
+  padding: 1rem 1.4rem;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+
+.footer-totals { display: flex; gap: 2rem; flex-wrap: wrap; }
+.ft-item-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-400); font-weight: 600; }
+.ft-item-val { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 700; margin-top: 1px; }
+.ft-green { color: var(--emerald-600); }
+.ft-red   { color: var(--rose-500); }
+.ft-violet{ color: var(--violet-600); }
+
+/* ══════════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════════ */
+.tabs {
+  display: flex; gap: 4px;
+  background: var(--ink-100);
+  border-radius: var(--r-lg);
+  padding: 4px;
+  margin-bottom: 1.25rem;
+}
+
+.tab-btn {
+  flex: 1; padding: 8px 12px;
+  background: none; border: none;
+  border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--ink-400);
+  cursor: pointer; transition: all 0.15s;
+  text-align: center;
+}
+.tab-btn.active {
+  background: white;
+  color: var(--violet-600);
+  box-shadow: var(--s-sm);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ══════════════════════════════════════════════════════════════
+   TURNOS MODULE
+══════════════════════════════════════════════════════════════ */
+.turnos-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ciclo-selector {
+  display: flex; gap: 6px;
+}
+.ciclo-btn {
+  padding: 6px 14px;
+  background: white; border: 1.5px solid var(--ink-200);
+  border-radius: var(--r-md);
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--ink-500); cursor: pointer;
+  transition: all 0.12s;
+}
+.ciclo-btn.active {
+  background: var(--violet-50);
+  border-color: var(--violet-400);
+  color: var(--violet-600);
+}
+
+.btn-add-turno {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--violet-600);
+  color: white; border: none;
+  padding: 8px 16px; border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+}
+.btn-add-turno:hover {
+  background: var(--violet-500);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124,58,237,0.35);
+}
+
+/* Turno add form */
+.add-turno-form {
+  background: var(--violet-50);
+  border: 1.5px solid var(--violet-100);
+  border-radius: var(--r-xl);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.add-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .add-form-grid { grid-template-columns: 1fr; }
+}
+
+.add-form-actions {
+  display: flex; gap: 0.75rem; justify-content: flex-end;
+}
+
+.btn-confirm {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--violet-600); color: white;
+  border: none; padding: 8px 18px;
+  border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-confirm:hover { background: var(--violet-500); }
+
+.btn-cancel-form {
+  display: inline-flex; align-items: center;
+  background: white; color: var(--ink-500);
+  border: 1.5px solid var(--ink-200);
+  padding: 8px 16px; border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 500;
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-cancel-form:hover { background: var(--ink-50); }
+
+/* Quincena group */
+.quincena-group { margin-bottom: 1.5rem; }
+.quincena-label {
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-400); margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.quincena-label::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--ink-100);
+}
+.quincena-subtotal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; color: var(--violet-500); font-weight: 600;
+}
+
+/* Turno card */
+.turno-card {
+  background: white;
+  border: 1.5px solid var(--ink-100);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.65rem;
+  display: flex; align-items: flex-start; gap: 1rem;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  animation: slideDown 0.2s ease;
+}
+.turno-card:hover {
+  border-color: var(--ink-200);
+  box-shadow: var(--s-sm);
+}
+
+.turno-card.dominical {
+  background: var(--teal-50);
+  border-color: var(--teal-100);
+}
+
+.turno-card.nocturno-completo {
+  background: var(--violet-50);
+  border-color: var(--violet-100);
+}
+
+.turno-fecha {
+  text-align: center;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+.turno-dia-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--ink-800); line-height: 1;
+}
+
+.turno-dia-nom {
+  font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ink-400);
+  font-weight: 600; margin-top: 2px;
+}
+
+.turno-dia-nom.dom { color: var(--teal-600); }
+.turno-dia-num.dom { color: var(--teal-600); }
+
+.turno-sep { width: 1px; background: var(--ink-100); align-self: stretch; flex-shrink: 0; }
+
+.turno-info { flex: 1; min-width: 0; }
+
+.turno-horario {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem; font-weight: 600;
+  color: var(--ink-700);
+}
+
+.turno-horario .arrow { color: var(--ink-300); margin: 0 6px; }
+
+.turno-dur {
+  font-size: 0.75rem; color: var(--ink-400); margin-top: 3px;
+}
+
+.turno-tags {
+  display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px;
+}
+
+.t-tag {
+  font-size: 0.65rem; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.tt-diurno   { background: var(--amber-100); color: var(--amber-600); }
+.tt-nocturno { background: var(--violet-100); color: var(--violet-600); }
+.tt-domingo  { background: var(--teal-100); color: var(--teal-600); }
+.tt-festivo  { background: var(--rose-100); color: var(--rose-600); }
+
+.turno-monto {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.turno-monto-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; font-weight: 700;
+  color: var(--emerald-600);
+}
+
+.turno-monto-det {
+  font-size: 0.68rem; color: var(--ink-400); margin-top: 3px;
+}
+
+.turno-del-btn {
+  position: absolute; top: 8px; right: 8px;
+  width: 22px; height: 22px;
+  background: none; border: none;
+  color: var(--ink-300); font-size: 14px;
+  cursor: pointer; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.turno-del-btn:hover { background: var(--rose-50); color: var(--rose-500); }
+
+/* Empty state */
+.empty-state {
+  text-align: center; padding: 3rem 2rem;
+  color: var(--ink-300);
+}
+.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.empty-txt { font-size: 0.85rem; }
+.empty-txt strong { color: var(--ink-500); display: block; margin-bottom: 4px; }
+
+/* ══════════════════════════════════════════════════════════════
+   FLOATING ACTION BUTTON
+══════════════════════════════════════════════════════════════ */
+.fab-wrap {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  z-index: 200;
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 10px;
+}
+
+.fab {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+}
+
+.fab-main {
+  background: linear-gradient(135deg, var(--violet-600), var(--violet-500));
+  color: white;
+}
+
+.fab-main:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(124,58,237,0.4); }
+.fab-main.open { transform: rotate(45deg); }
+
+.fab-menu {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 8px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease;
+}
+.fab-menu.open { max-height: 200px; }
+
+.fab-item {
+  display: flex; align-items: center; gap: 10px;
+  background: white; border: none;
+  padding: 9px 16px 9px 14px;
+  border-radius: 999px;
+  box-shadow: var(--s-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.fab-item:hover { transform: translateX(-3px); box-shadow: var(--s-lg); }
+.fab-item-ico { font-size: 16px; }
+
+/* ══════════════════════════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════════════════════════ */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, var(--violet-600), var(--violet-700));
+  color: white; border: none;
+  padding: 0 18px; height: 38px;
+  border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+  transition: all 0.15s;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(124,58,237,0.35); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: white; color: var(--ink-600);
+  border: 1.5px solid var(--ink-200);
+  padding: 0 16px; height: 36px;
+  border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem; font-weight: 500;
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-secondary:hover { background: var(--ink-50); border-color: var(--ink-300); }
+
+/* ══════════════════════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════════════════════ */
+.modal-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(9,9,15,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 500;
+  align-items: center; justify-content: center;
+}
+.modal-backdrop.visible { display: flex; }
+
+.modal-box {
+  background: white;
+  border-radius: var(--r-2xl);
+  padding: 2rem;
+  width: 90%; max-width: 400px;
+  box-shadow: var(--s-lg);
+  text-align: center;
+  animation: slideDown 0.25s ease;
+}
+.modal-ico { font-size: 2.8rem; margin-bottom: 0.75rem; }
+.modal-ttl { font-size: 1.15rem; font-weight: 700; font-family: 'Syne', sans-serif; color: var(--ink-800); margin-bottom: 0.4rem; }
+.modal-desc { font-size: 0.82rem; color: var(--ink-400); margin-bottom: 1.5rem; line-height: 1.6; }
+.modal-btns { display: flex; gap: 0.75rem; justify-content: center; }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════════ */
+@media (max-width: 580px) {
+  .neto-kpis { grid-template-columns: 1fr 1fr; }
+  .neto-kpi:nth-child(2n) { border-right: none; }
+  .turno-card { flex-wrap: wrap; }
+  .turno-monto { width: 100%; text-align: left; border-top: 1px dashed var(--ink-100); padding-top: 8px; margin-top: 4px; }
+  .fab-wrap { bottom: 1rem; right: 1rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TRANSITIONS
+══════════════════════════════════════════════════════════════ */
+.neto-num, .neto-kpi-val, .det-val, .acc-total, .ft-item-val {
+  transition: all 0.28s ease;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HORARIO FIJO MODULE
+══════════════════════════════════════════════════════════════ */
+.horario-fijo-wrap {
+  border: 1.5px solid var(--ink-100);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-top: 0.25rem;
+  transition: border-color 0.2s;
+}
+.horario-fijo-wrap:focus-within,
+.horario-fijo-wrap.open {
+  border-color: var(--violet-300);
+}
+
+.horario-fijo-toggle {
+  width: 100%;
+  background: var(--ink-50);
+  border: none;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+  gap: 10px;
+}
+.horario-fijo-toggle:hover { background: var(--violet-50); }
+
+.horario-fijo-toggle-left {
+  display: flex; align-items: center; gap: 10px;
+}
+.horario-fijo-ico { font-size: 18px; flex-shrink: 0; }
+
+.horario-fijo-toggle-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-700);
+  font-family: 'Syne', sans-serif;
+}
+.horario-fijo-toggle-sub {
+  font-size: 0.7rem;
+  color: var(--ink-400);
+  margin-top: 1px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.horario-fijo-chevron {
+  font-size: 11px;
+  color: var(--ink-300);
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+.horario-fijo-wrap.open .horario-fijo-chevron {
+  transform: rotate(90deg);
+}
+
+.horario-fijo-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.horario-fijo-wrap.open .horario-fijo-body {
+  max-height: 600px;
+}
+
+.horario-fijo-inner {
+  padding: 1rem;
+  background: white;
+  border-top: 1px solid var(--ink-100);
+}
+
+.hf-note {
+  font-size: 0.75rem;
+  color: var(--ink-400);
+  background: var(--violet-50);
+  border: 1px solid var(--violet-100);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.hf-section-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-400);
+  margin-bottom: 0.5rem;
+}
+
+.hf-franjas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.hf-franja-item label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-400);
+  margin-bottom: 4px;
+}
+
+.hf-franja-item input[type="time"] {
+  height: 38px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0 8px;
+}
+
+.hf-dias-grid {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hf-dia-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 10px;
+  background: var(--ink-50);
+  border: 1.5px solid var(--ink-100);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: 'DM Sans', sans-serif;
+  min-width: 40px;
+}
+
+.hf-dia-btn:hover { border-color: var(--violet-300); background: var(--violet-50); }
+
+.hf-dia-btn.descanso {
+  background: var(--rose-50);
+  border-color: var(--rose-200);
+}
+
+.hf-dia-btn .dia-nom {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-500);
+}
+
+.hf-dia-btn.descanso .dia-nom { color: var(--rose-500); }
+
+.hf-dia-btn .dia-ico {
+  font-size: 14px;
+}
+
+.hf-resumen {
+  background: var(--ink-50);
+  border: 1px solid var(--ink-100);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  margin-top: 0.85rem;
+}
+
+.hf-resumen-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--ink-100);
+}
+.hf-resumen-row:last-child { border-bottom: none; }
+
+.hf-resumen-lbl {
+  font-size: 0.75rem;
+  color: var(--ink-500);
+}
+
+.hf-resumen-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--violet-600);
+}
+
+.hf-apply-btn {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 9px;
+  background: linear-gradient(135deg, var(--violet-600), var(--violet-700));
+  color: white;
+  border: none;
+  border-radius: var(--r-md);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(124,58,237,0.25);
+}
+.hf-apply-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124,58,237,0.35);
+}
+.hf-apply-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ─── TOP BAR ─── -->
+<nav class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-dot"></div>
+    NóminaFlow
+  </div>
+  <div class="topbar-meta">
+    <span class="meta-chip active" id="chipJornada">44h/sem</span>
+    <span class="meta-chip">SMMLV $1.750.905</span>
+    <span class="meta-chip" id="chipFecha"></span>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div class="hero-strip">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Colombia · Legislación Laboral 2026</div>
+      <h1 class="hero-title">Control de <span>Nómina</span><br>& Turnos Rotativos</h1>
+      <p class="hero-sub">Ley 2101/2021 · Ley 2381/2024 · Decreto 2613/2025</p>
+    </div>
+    <div class="hero-kpis">
+      <div class="hero-kpi">
+        <div class="hero-kpi-val teal" id="heroNeto">$0</div>
+        <div class="hero-kpi-lbl">Neto a pagar</div>
+      </div>
+      <div class="hero-kpi">
+        <div class="hero-kpi-val violet" id="heroTurnos">0</div>
+        <div class="hero-kpi-lbl">Turnos registrados</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── APP ─── -->
+<div class="app-container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('liquidacion', this)">💰 Liquidación</button>
+    <button class="tab-btn" onclick="switchTab('turnos', this)">📅 Turnos Rotativos</button>
+  </div>
+
+  <!-- ══ TAB: LIQUIDACIÓN ══ -->
+  <div id="tab-liquidacion" class="tab-panel active">
+    <div class="main-grid">
+
+      <!-- LEFT: INPUTS -->
+      <div>
+
+        <!-- Empleado -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <div class="card-ico v">👤</div>
+              <span class="card-ttl">Datos del Empleado</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="fg">
+              <label>Nombre completo</label>
+              <input type="text" id="nombre" placeholder="Ingresa el nombre…" oninput="recalcularDebounced()">
+            </div>
+            <div class="fg">
+              <label>Cargo / Ocupación</label>
+              <input type="text" id="cargo" placeholder="Ingresa el cargo…" oninput="recalcularDebounced()">
+            </div>
+            <div class="fg">
+              <label>Período de liquidación</label>
+              <select id="periodo" onchange="actualizarJornada(); recalcular()">
+                <option value="2026-01">Enero 2026</option>
+                <option value="2026-02">Febrero 2026</option>
+                <option value="2026-03">Marzo 2026</option>
+                <option value="2026-04">Abril 2026</option>
+                <option value="2026-05">Mayo 2026</option>
+                <option value="2026-06">Junio 2026</option>
+                <option value="2026-07">Julio 2026 ⚖️</option>
+                <option value="2026-08">Agosto 2026</option>
+                <option value="2026-09">Septiembre 2026</option>
+                <option value="2026-10">Octubre 2026</option>
+                <option value="2026-11">Noviembre 2026</option>
+                <option value="2026-12">Diciembre 2026</option>
+              </select>
+            </div>
+
+            <!-- ── HORARIO FIJO ─────────────────────────────────── -->
+            <div class="horario-fijo-wrap">
+              <button type="button" class="horario-fijo-toggle" id="horarioFijoToggle" onclick="toggleHorarioFijo()" aria-expanded="false">
+                <div class="horario-fijo-toggle-left">
+                  <span class="horario-fijo-ico">🗓</span>
+                  <div>
+                    <div class="horario-fijo-toggle-title">Horario fijo semanal</div>
+                    <div class="horario-fijo-toggle-sub" id="horarioFijoSub">Sin configurar — click para definir</div>
+                  </div>
+                </div>
+                <span class="horario-fijo-chevron" id="horarioFijoChevron">▶</span>
+              </button>
+
+              <div class="horario-fijo-body" id="horarioFijoBody">
+                <div class="horario-fijo-inner">
+                  <div class="hf-note">
+                    ℹ️ Define tu horario diario y días de descanso. El sistema calculará automáticamente las horas ordinarias, diurnas y nocturnas del mes.
+                  </div>
+
+                  <!-- Franjas del día -->
+                  <div class="hf-section-lbl">Franjas horarias del día</div>
+                  <div class="hf-franjas-grid">
+                    <div class="hf-franja-item">
+                      <label>Entrada mañana</label>
+                      <input type="time" id="hfEntradaMañana" value="08:00" onchange="calcularHorarioFijo()">
+                    </div>
+                    <div class="hf-franja-item">
+                      <label>Salida mañana</label>
+                      <input type="time" id="hfSalidaMañana" value="12:00" onchange="calcularHorarioFijo()">
+                    </div>
+                    <div class="hf-franja-item">
+                      <label>Entrada tarde</label>
+                      <input type="time" id="hfEntradaTarde" value="13:00" onchange="calcularHorarioFijo()">
+                    </div>
+                    <div class="hf-franja-item">
+                      <label>Salida tarde</label>
+                      <input type="time" id="hfSalidaTarde" value="17:00" onchange="calcularHorarioFijo()">
+                    </div>
+                  </div>
+
+                  <!-- Días de descanso -->
+                  <div class="hf-section-lbl" style="margin-top:1rem;">Días de descanso semanal</div>
+                  <div class="hf-dias-grid" id="hfDiasGrid">
+                    <!-- Rendered by JS -->
+                  </div>
+
+                  <!-- Resumen calculado -->
+                  <div class="hf-resumen" id="hfResumen" style="display:none;">
+                    <div class="hf-resumen-row">
+                      <span class="hf-resumen-lbl">Horas diarias</span>
+                      <span class="hf-resumen-val" id="hfHorasDia">0h</span>
+                    </div>
+                    <div class="hf-resumen-row">
+                      <span class="hf-resumen-lbl">Días laborales/mes</span>
+                      <span class="hf-resumen-val" id="hfDiasLab">0</span>
+                    </div>
+                    <div class="hf-resumen-row">
+                      <span class="hf-resumen-lbl">Horas ordinarias mes</span>
+                      <span class="hf-resumen-val" id="hfHorasMes">0h</span>
+                    </div>
+                    <div class="hf-resumen-row">
+                      <span class="hf-resumen-lbl">Horas nocturnas mes</span>
+                      <span class="hf-resumen-val" id="hfHorasNoch">0h</span>
+                    </div>
+                  </div>
+
+                  <button type="button" class="hf-apply-btn" id="hfApplyBtn" onclick="aplicarHorarioFijo()" style="display:none;">
+                    ✓ Aplicar al cálculo de nómina
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- ── /HORARIO FIJO ───────────────────────────────── -->
+
+          </div>
+        </div>
+
+        <!-- Salario -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <div class="card-ico t">💵</div>
+              <span class="card-ttl">Salario</span>
+            </div>
+          </div>
+          <div class="card-body">
+
+            <div id="jornadaAlert" class="jornada-alert" style="display:none">
+              ⚖️ <div><strong>Jornada de 42h/semana activa</strong> (15-jul-2026 en adelante · Ley 2101 de 2021). El valor de hora ordinaria se recalcula automáticamente.</div>
+            </div>
+
+            <div class="fg">
+              <label>Salario base mensual (COP)</label>
+              <div class="prefix-wrap">
+                <span class="prefix-sym">$</span>
+                <input type="number" id="salarioBase" value="1750905" min="1750905" step="1000" oninput="recalcularDebounced()" style="font-family:'JetBrains Mono',monospace;font-weight:600;">
+              </div>
+              <div class="smmlv-row">
+                <span class="smmlv-hint-txt">= <strong id="smmlvRatio">1.00</strong>× SMMLV</span>
+                <button class="btn-ghost-sm" onclick="usarSMMLV()">← Usar SMMLV</button>
+              </div>
+            </div>
+
+            <div id="auxilioInfo" class="auxilio-badge" style="display:none;">
+              🚌 Aplica Auxilio de Transporte: +$249.095
+            </div>
+
+            <div class="hora-tag">
+              <span class="hora-tag-left">🕐 Valor hora ordinaria (<span id="jornadaHorasTag">44</span>h/sem × 4.333)</span>
+              <span class="hora-tag-val" id="valorHoraOrd">$0</span>
+            </div>
+
+            <div class="fg" style="margin-top:1rem;">
+              <label>Días trabajados en el mes</label>
+              <input type="number" id="diasTrabajados" value="30" min="1" max="30" oninput="recalcularDebounced()">
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Horas extra manuales -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <div class="card-ico a">⏱</div>
+              <span class="card-ttl">Horas Extra &amp; Recargos Manuales</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="horas-grid">
+              <div class="hora-box">
+                <label>H.E. Diurna <span class="recargo-pill rp-ed">+25%</span></label>
+                <input type="number" id="hED" value="0" min="0" oninput="recalcularDebounced()">
+              </div>
+              <div class="hora-box">
+                <label>H.E. Nocturna <span class="recargo-pill rp-en">+75%</span></label>
+                <input type="number" id="hEN" value="0" min="0" oninput="recalcularDebounced()">
+              </div>
+              <div class="hora-box">
+                <label>Rec. Nocturno <span class="recargo-pill rp-n">+35%</span></label>
+                <input type="number" id="hN" value="0" min="0" oninput="recalcularDebounced()">
+              </div>
+              <div class="hora-box">
+                <label>Dominical/Fest. <span class="recargo-pill rp-d">+100%</span></label>
+                <input type="number" id="hD" value="0" min="0" oninput="recalcularDebounced()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end left col -->
+
+      <!-- RIGHT: RESULTS -->
+      <div>
+
+        <!-- Neto card -->
+        <div class="neto-card">
+          <div class="neto-top">
+            <div>
+              <div class="neto-emp-name" id="summaryNombre">—</div>
+              <div class="neto-emp-cargo" id="summaryCargo">—</div>
+            </div>
+            <div class="neto-periodo-badge" id="summaryPeriodo">—</div>
+          </div>
+          <div class="neto-main">
+            <div class="neto-lbl">Neto a pagar</div>
+            <div class="neto-num"><span class="cur">COP $</span><span id="netoNum">0</span></div>
+            <div class="neto-smmlv-ratio" id="netoSmmlv">— × SMMLV</div>
+          </div>
+          <div class="neto-kpis">
+            <div class="neto-kpi">
+              <div class="neto-kpi-lbl">Devengado</div>
+              <div class="neto-kpi-val pos" id="kDevengado">$0</div>
+            </div>
+            <div class="neto-kpi">
+              <div class="neto-kpi-lbl">Deducciones</div>
+              <div class="neto-kpi-val neg" id="kDeducciones">-$0</div>
+            </div>
+            <div class="neto-kpi">
+              <div class="neto-kpi-lbl">Hora ordinaria</div>
+              <div class="neto-kpi-val dim" id="kHoraOrd">$0</div>
+            </div>
+            <div class="neto-kpi">
+              <div class="neto-kpi-lbl">Salud (4%)</div>
+              <div class="neto-kpi-val neg" id="kSalud">-$0</div>
+            </div>
+            <div class="neto-kpi">
+              <div class="neto-kpi-lbl">Pensión (4%)</div>
+              <div class="neto-kpi-val neg" id="kPension">-$0</div>
+            </div>
+            <div class="neto-kpi">
+              <div class="neto-kpi-lbl">Recargos</div>
+              <div class="neto-kpi-val pos" id="kRecargos">$0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desglose accordion -->
+        <div class="desglose-card">
+          <div class="desglose-head">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:0.85rem;font-weight:700;font-family:'Syne',sans-serif;color:var(--ink-700)">Desglose de Nómina</span>
+            </div>
+            <button class="btn-secondary" onclick="recalcular()" aria-label="Recalcular nómina" title="Recalcular">↺</button>
+          </div>
+
+          <!-- Ingresos -->
+          <div class="acc-section open" id="acc-ing">
+            <button class="acc-trigger" onclick="toggleAcc('acc-ing')">
+              <div class="acc-trig-l">
+                <div class="acc-badge" style="background:var(--emerald-500)"></div>
+                <span class="acc-name">Ingresos Salariales</span>
+              </div>
+              <div class="acc-trig-r">
+                <span class="acc-total dv-green" id="aTotal-ing">$0</span>
+                <span class="acc-arrow">▶</span>
+              </div>
+            </button>
+            <div class="acc-body">
+              <div class="acc-inner" id="rows-ing">
+                <!-- Dynamic rows -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Deducciones -->
+          <div class="acc-section" id="acc-ded">
+            <button class="acc-trigger" onclick="toggleAcc('acc-ded')">
+              <div class="acc-trig-l">
+                <div class="acc-badge" style="background:var(--rose-500)"></div>
+                <span class="acc-name">Deducciones del Empleado</span>
+              </div>
+              <div class="acc-trig-r">
+                <span class="acc-total dv-red" id="aTotal-ded">-$0</span>
+                <span class="acc-arrow">▶</span>
+              </div>
+            </button>
+            <div class="acc-body">
+              <div class="acc-inner" id="rows-ded"></div>
+            </div>
+          </div>
+
+          <!-- Parafiscales -->
+          <div class="acc-section" id="acc-para">
+            <button class="acc-trigger" onclick="toggleAcc('acc-para')">
+              <div class="acc-trig-l">
+                <div class="acc-badge" style="background:var(--violet-500)"></div>
+                <span class="acc-name">Parafiscales — Empleador</span>
+              </div>
+              <div class="acc-trig-r">
+                <span class="acc-total dv-blue" id="aTotal-para">$0</span>
+                <span class="acc-arrow">▶</span>
+              </div>
+            </button>
+            <div class="acc-body">
+              <div class="acc-inner" id="rows-para">
+                <div style="font-size:0.72rem;color:var(--ink-400);margin-bottom:8px;font-style:italic;">Costo del empleador — no afectan el neto</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provisiones -->
+          <div class="acc-section" id="acc-prov">
+            <button class="acc-trigger" onclick="toggleAcc('acc-prov')">
+              <div class="acc-trig-l">
+                <div class="acc-badge" style="background:var(--amber-500)"></div>
+                <span class="acc-name">Provisiones Prestaciones Sociales</span>
+              </div>
+              <div class="acc-trig-r">
+                <span class="acc-total dv-amber" id="aTotal-prov">$0</span>
+                <span class="acc-arrow">▶</span>
+              </div>
+            </button>
+            <div class="acc-body">
+              <div class="acc-inner" id="rows-prov">
+                <div style="font-size:0.72rem;color:var(--ink-400);margin-bottom:8px;font-style:italic;">Provisión mensual — pagos diferidos al empleado</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="desglose-footer">
+            <div class="footer-totals">
+              <div>
+                <div class="ft-item-lbl">Devengado</div>
+                <div class="ft-item-val ft-green" id="ftDevengado">$0</div>
+              </div>
+              <div>
+                <div class="ft-item-lbl">Deducciones</div>
+                <div class="ft-item-val ft-red" id="ftDeducciones">-$0</div>
+              </div>
+              <div>
+                <div class="ft-item-lbl">Neto pagado</div>
+                <div class="ft-item-val ft-violet" id="ftNeto">$0</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end desglose -->
+
+      </div><!-- end right col -->
+    </div><!-- end main-grid -->
+  </div><!-- end tab liquidacion -->
+
+  <!-- ══ TAB: TURNOS ══ -->
+  <div id="tab-turnos" class="tab-panel">
+
+    <div class="main-grid">
+
+      <!-- LEFT: add turno panel -->
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <div class="card-ico v">📋</div>
+              <span class="card-ttl">Ciclo de Pago</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="fg">
+              <label>Modalidad de corte</label>
+              <div class="ciclo-selector">
+                <button class="ciclo-btn active" id="cicloBtn1530" onclick="setCiclo('15-30')">15 y 30</button>
+                <button class="ciclo-btn" id="cicloBtn520" onclick="setCiclo('5-20')">5 y 20</button>
+              </div>
+            </div>
+            <div class="fg">
+              <label>Salario para cálculo de turnos</label>
+              <div class="prefix-wrap">
+                <span class="prefix-sym">$</span>
+                <input type="number" id="salarioTurnos" value="1750905" min="1750905" step="1000" oninput="renderTurnos()" style="font-family:'JetBrains Mono',monospace;font-weight:600;">
+              </div>
+              <div class="smmlv-row">
+                <span class="smmlv-hint-txt">Hora ordinaria: <strong id="horaOrdTurnos">$0</strong></span>
+                <button class="btn-ghost-sm" onclick="document.getElementById('salarioTurnos').value=1750905;renderTurnos()">← SMMLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen de turnos -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <div class="card-ico t">📊</div>
+              <span class="card-ttl">Resumen de Turnos</span>
+            </div>
+          </div>
+          <div class="card-body" id="resumenTurnos">
+            <div style="font-size:0.82rem;color:var(--ink-400);text-align:center;padding:1rem 0;">
+              Agrega turnos para ver el resumen aquí.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: turno list -->
+      <div>
+        <div class="turnos-controls">
+          <div style="font-size:0.85rem;font-weight:700;font-family:'Syne',sans-serif;color:var(--ink-700)">
+            Registro de Turnos
+            <span style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--ink-400);font-weight:400;margin-left:8px;" id="countTurnos">0 turnos</span>
+          </div>
+          <button class="btn-add-turno" onclick="toggleFormTurno()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+            Agregar Turno
+          </button>
+        </div>
+
+        <!-- Add form (initially hidden) -->
+        <div class="add-turno-form" id="formTurno" style="display:none;">
+          <div style="font-size:0.82rem;font-weight:700;color:var(--violet-700);margin-bottom:0.75rem;font-family:'Syne',sans-serif;">Nuevo Turno</div>
+          <div class="add-form-grid">
+            <div class="fg">
+              <label>Entrada</label>
+              <input type="datetime-local" id="turnoEntrada">
+            </div>
+            <div class="fg">
+              <label>Salida</label>
+              <input type="datetime-local" id="turnoSalida">
+            </div>
+          </div>
+          <div id="turnoPreview" style="display:none;margin-bottom:0.75rem;"></div>
+          <div class="add-form-actions">
+            <button class="btn-cancel-form" onclick="toggleFormTurno()">Cancelar</button>
+            <button class="btn-confirm" onclick="agregarTurno()">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Registrar Turno
+            </button>
+          </div>
+        </div>
+
+        <!-- Turno list -->
+        <div id="turnosList"></div>
+
+      </div><!-- end right turnos col -->
+
+    </div><!-- end turnos grid -->
+
+  </div><!-- end tab turnos -->
+
+</div><!-- end app-container -->
+
+<!-- ─── FLOATING BUTTON ─── -->
+<div class="fab-wrap">
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-item" onclick="generarPDF(); toggleFab()">
+      <span class="fab-item-ico">📄</span> Exportar PDF
+    </button>
+    <button class="fab-item" onclick="exportarExcel(); toggleFab()">
+      <span class="fab-item-ico">📊</span> Exportar Excel
+    </button>
+    <button class="fab-item" onclick="limpiarTodo()">
+      <span class="fab-item-ico">🗑</span> Limpiar datos
+    </button>
+  </div>
+  <button class="fab fab-main" id="fabBtn" onclick="toggleFab()" title="Opciones de exportación">+</button>
+</div>
+
+<!-- ─── MODAL ─── -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal-box">
+    <div class="modal-ico" id="modalIco">📄</div>
+    <div class="modal-ttl" id="modalTtl">Generando reporte…</div>
+    <div class="modal-desc" id="modalDesc">El archivo se descargará automáticamente.</div>
+    <div class="modal-btns">
+      <button class="btn-secondary" onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONFIG INLINE (equivalente a importar nominaConfig.js) ─── -->
+<script>
+/* ══════════════════════════════════════════════════════════════
+   NOMINA_CONFIG — Fuente única de verdad normativa Colombia 2026
+   (Equivalente al archivo nominaConfig.js en producción modular)
+══════════════════════════════════════════════════════════════ */
+const NOMINA_CONFIG = {
+  SMMLV: 1_750_905,
+  AUXILIO_TRANSPORTE: 249_095,
+  UMBRAL_AUXILIO_SMMLV: 2,
+
+  JORNADA: {
+    HORAS_ANTES:   44,
+    HORAS_DESPUES: 42,
+    FECHA_CAMBIO:  '2026-07-15',
+  },
+  SEMANAS_POR_MES: 4.333,
+
+  // Franja nocturna — Ley 2381 de 2024 (19:00 a 06:00)
+  FRANJAS: { DIURNO_INICIO_H: 6, DIURNO_FIN_H: 19, NOCTURNO_INICIO_H: 19, NOCTURNO_FIN_H: 6 },
+
+  RECARGOS: {
+    EXTRA_DIURNO:    0.25,
+    EXTRA_NOCTURNO:  0.75,
+    NOCTURNO_ORD:    0.35,
+    DOMINICAL_BASE:  1.00,   // 100% sobre HO — Ley 2381/2024
+    EXTRA_DOMINICAL: 1.25,
+  },
+
+  APORTES_EMPLEADO: { SALUD: 0.04, PENSION: 0.04 },
+
+  APORTES_EMPLEADOR: {
+    SALUD: 0.085, PENSION: 0.12,
+    ARL_CLASE_I: 0.00522, ARL_CLASE_II: 0.01044,
+    SENA: 0.02, ICBF: 0.03, CAJA_COMPENSACION: 0.04,
+  },
+
+  SOLIDARIDAD: [
+    { desde: 4, hasta: 16, tasa: 0.01 },
+    { desde: 16, hasta: 17, tasa: 0.012 },
+    { desde: 17, hasta: 18, tasa: 0.014 },
+    { desde: 18, hasta: 19, tasa: 0.016 },
+    { desde: 19, hasta: 20, tasa: 0.018 },
+    { desde: 20, hasta: Infinity, tasa: 0.02 },
+  ],
+
+  PRESTACIONES: {
+    PRIMA:         1/12,
+    CESANTIAS:     1/12,
+    INT_CESANTIAS: 0.12/12,
+    VACACIONES:    15/360,
+  },
+
+  // Festivos Colombia 2026 (Ley 51/1983)
+  FESTIVOS_2026: new Set([
+    '2026-01-01','2026-01-12','2026-03-23','2026-04-02','2026-04-03',
+    '2026-05-01','2026-05-18','2026-06-08','2026-06-15','2026-06-29',
+    '2026-07-20','2026-08-07','2026-08-17','2026-10-12','2026-11-02',
+    '2026-11-16','2026-12-08','2026-12-25',
+  ]),
+};
+
+/* ══════════════════════════════════════════════════════════════
+   MOTOR DE CÁLCULO — Cálculo hora ordinaria
+   CST + Ley 2101/2021: horas semanales condicionales al período
+══════════════════════════════════════════════════════════════ */
+function getJornadaHoras(periodoStr) {
+  // periodoStr = 'YYYY-MM'
+  const [y, m] = periodoStr.split('-').map(Number);
+  const fechaCambio = new Date(NOMINA_CONFIG.JORNADA.FECHA_CAMBIO);
+  // Primera fecha del período
+  const fechaPer = new Date(y, m - 1, 1);
+  return fechaPer >= fechaCambio
+    ? NOMINA_CONFIG.JORNADA.HORAS_DESPUES
+    : NOMINA_CONFIG.JORNADA.HORAS_ANTES;
+}
+
+function horaOrdinaria(salario, horas) {
+  return salario / (horas * NOMINA_CONFIG.SEMANAS_POR_MES);
+}
+
+function calcularSolidaridad(salario) {
+  const multSmmlv = salario / NOMINA_CONFIG.SMMLV;
+  for (const tramo of NOMINA_CONFIG.SOLIDARIDAD) {
+    if (multSmmlv >= tramo.desde && multSmmlv < tramo.hasta) {
+      return salario * tramo.tasa;
+    }
+  }
+  return 0;
+}
+
+/**
+ * Motor de liquidación mensual
+ */
+function liquidar({ salario, dias, hED, hEN, hN, hD, periodo }) {
+  const horas    = getJornadaHoras(periodo);
+  const horaOrd  = horaOrdinaria(salario, horas);
+  const factor   = dias / 30;
+
+  // Salario proporcional (CST Art.133)
+  const salProp = salario * factor;
+
+  // Auxilio transporte — aplica si salario <= 2×SMMLV (Decreto 2614/2025)
+  const aplicaAux = salario <= NOMINA_CONFIG.SMMLV * NOMINA_CONFIG.UMBRAL_AUXILIO_SMMLV;
+  const auxilio   = aplicaAux ? NOMINA_CONFIG.AUXILIO_TRANSPORTE * factor : 0;
+
+  // Recargos (CST Art.168 / Art.179 — Ley 2381/2024)
+  const vED = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.EXTRA_DIURNO)   * hED;   // 1.25×HO
+  const vEN = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.EXTRA_NOCTURNO) * hEN;   // 1.75×HO
+  const vN  = horaOrd * NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD          * hN;   // 0.35×HO (solo recargo)
+  const vD  = horaOrd * NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE         * hD;  // 1.00×HO (recargo dominical 100%)
+
+  const totalRecargos = vED + vEN + vN + vD;
+
+  // Devengado salarial (base de cotización — sin auxilio transporte per Ley 100)
+  const devSalarial = salProp + totalRecargos;
+  const devTotal    = devSalarial + auxilio;
+
+  // Deducciones empleado — base: devengado salarial
+  const dSalud    = devSalarial * NOMINA_CONFIG.APORTES_EMPLEADO.SALUD;
+  const dPension  = devSalarial * NOMINA_CONFIG.APORTES_EMPLEADO.PENSION;
+  const dSolid    = calcularSolidaridad(salario);
+  const totalDed  = dSalud + dPension + dSolid;
+
+  const neto = devTotal - totalDed;
+
+  // Parafiscales empleador
+  const eS   = devSalarial * NOMINA_CONFIG.APORTES_EMPLEADOR.SALUD;
+  const eP   = devSalarial * NOMINA_CONFIG.APORTES_EMPLEADOR.PENSION;
+  const eARL = devSalarial * NOMINA_CONFIG.APORTES_EMPLEADOR.ARL_CLASE_I;
+  const eSENA= devSalarial * NOMINA_CONFIG.APORTES_EMPLEADOR.SENA;
+  const eICBF= devSalarial * NOMINA_CONFIG.APORTES_EMPLEADOR.ICBF;
+  const eCaja= devSalarial * NOMINA_CONFIG.APORTES_EMPLEADOR.CAJA_COMPENSACION;
+
+  // Provisiones prestaciones (base = devTotal con auxilio, solo salario para vacaciones)
+  const prima       = devTotal    * NOMINA_CONFIG.PRESTACIONES.PRIMA;
+  const cesantias   = devTotal    * NOMINA_CONFIG.PRESTACIONES.CESANTIAS;
+  const intCes      = cesantias   * NOMINA_CONFIG.PRESTACIONES.INT_CESANTIAS;
+  const vacaciones  = salProp     * NOMINA_CONFIG.PRESTACIONES.VACACIONES;
+
+  return {
+    horas, horaOrd, factor,
+    salProp, auxilio, aplicaAux,
+    vED, vEN, vN, vD, totalRecargos,
+    devSalarial, devTotal,
+    dSalud, dPension, dSolid, totalDed, neto,
+    eS, eP, eARL, eSENA, eICBF, eCaja,
+    prima, cesantias, intCes, vacaciones,
+  };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOTOR TURNOS ROTATIVOS
+   Calcula recargos exactos por franja horaria — incluyendo
+   turnos que cruzan medianoche (ej. 22:00 → 06:00)
+══════════════════════════════════════════════════════════════ */
+
+function esFestivo(fecha) {
+  const iso = fecha.toISOString().slice(0, 10);
+  return NOMINA_CONFIG.FESTIVOS_2026.has(iso);
+}
+
+function esDomingo(fecha) {
+  return fecha.getDay() === 0;
+}
+
+/**
+ * Calcula minutos en franja diurna vs nocturna entre dos timestamps.
+ * Franja nocturna: 19:00 – 06:00 (Ley 2381/2024 — CST Art.160 modificado)
+ * Maneja correctamente turnos que cruzan medianoche.
+ */
+function calcularFranjas(tsEntrada, tsSalida) {
+  const DI = NOMINA_CONFIG.FRANJAS.DIURNO_INICIO_H;   // 6
+  const DF = NOMINA_CONFIG.FRANJAS.DIURNO_FIN_H;       // 19
+  let minDiurno = 0, minNocturno = 0;
+
+  // Iteramos minuto a minuto (eficiente para turnos < 24h — máx ~1440 iter)
+  // Para turnos largos se podría optimizar por segmentos, pero la precisión
+  // minuto a minuto garantiza exactitud en franjas parciales
+  let t = new Date(tsEntrada);
+  while (t < tsSalida) {
+    const h = t.getHours();
+    // Diurno: 06:00 (incl) hasta 19:00 (excl)
+    if (h >= DI && h < DF) {
+      minDiurno++;
+    } else {
+      minNocturno++;
+    }
+    t = new Date(t.getTime() + 60_000); // avanzar 1 minuto
+  }
+
+  return {
+    horasDiurnas:  minDiurno  / 60,
+    horasNocturnas: minNocturno / 60,
+  };
+}
+
+/**
+ * Analiza un turno completo y determina tipos de horas y recargos.
+ * Maneja domingos, festivos y cruces de medianoche correctamente.
+ */
+function analizarTurno(entrada, salida, salarioMensual) {
+  const tsE = new Date(entrada);
+  const tsS = new Date(salida);
+
+  if (tsS <= tsE) return null; // Salida antes o igual que entrada — inválido
+
+  const totalMins = (tsS - tsE) / 60_000;
+  const totalHoras = totalMins / 60;
+
+  // Determinar jornada según fecha de entrada
+  const periodoStr = `${tsE.getFullYear()}-${String(tsE.getMonth()+1).padStart(2,'0')}`;
+  const horasSem   = getJornadaHoras(periodoStr);
+  const horaOrd    = horaOrdinaria(salarioMensual, horasSem);
+
+  // ¿Es dominical o festivo?
+  // Si el turno cruza medianoche, verificamos AMBOS días
+  const isDomFestE = esDomingo(tsE) || esFestivo(tsE);
+  const isDomFestS = esDomingo(tsS) || esFestivo(tsS);
+  const hayDomFest = isDomFestE || isDomFestS;
+
+  // Calcular horas diurnas y nocturnas
+  const { horasDiurnas, horasNocturnas } = calcularFranjas(tsE, tsS);
+
+  // Calcular valor del turno
+  // Lógica: si el día es dominical/festivo, aplica recargo base (100%) sobre TODAS las horas
+  // Adicionalmente se suman los recargos nocturnos sobre las horas nocturnas
+  let valorTurno = 0;
+  let desglose = {};
+
+  if (hayDomFest) {
+    // Horas dominicales/festivas diurnas: HO × (1 + 1.00) = 2×HO
+    const vDomDiurno  = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE) * horasDiurnas;
+    // Horas dominicales/festivas nocturnas: HO × (1 + 1.00 + 0.35) = 2.35×HO
+    const vDomNocturno= horaOrd * (1 + NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE + NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD) * horasNocturnas;
+    valorTurno = vDomDiurno + vDomNocturno;
+    desglose = {
+      tipo: 'dominical',
+      horasDiurnas, horasNocturnas,
+      vDomDiurno, vDomNocturno,
+    };
+  } else {
+    // Horas ordinarias diurnas: HO × 1 = HO
+    const vOrdDiurno   = horaOrd * horasDiurnas;
+    // Horas ordinarias nocturnas: HO × (1 + 0.35) = 1.35×HO
+    const vOrdNocturno = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD) * horasNocturnas;
+    valorTurno = vOrdDiurno + vOrdNocturno;
+    desglose = {
+      tipo: 'ordinario',
+      horasDiurnas, horasNocturnas,
+      vOrdDiurno, vOrdNocturno,
+    };
+  }
+
+  return {
+    entrada: tsE, salida: tsS,
+    totalHoras, horasDiurnas, horasNocturnas,
+    hayDomFest, isDomFestE, isDomFestS,
+    valorTurno, desglose,
+    horaOrd, horasSem,
+    periodoStr,
+  };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════════ */
+let cicloActivo = '15-30';
+let turnos = [];   // { id, entrada:ISO, salida:ISO }
+let fabOpen = false;
+
+// Cargar desde localStorage
+function cargarEstado() {
+  try {
+    const t = localStorage.getItem('nf_turnos_2026');
+    if (t) {
+      const parsed = JSON.parse(t);
+      // Validate structure before trusting stored data
+      turnos = Array.isArray(parsed) ? parsed.filter(
+        x => x && typeof x.id === 'number' &&
+             typeof x.entrada === 'string' &&
+             typeof x.salida  === 'string'
+      ) : [];
+    }
+    const c = localStorage.getItem('nf_ciclo_2026');
+    if (c === '15-30' || c === '5-20') cicloActivo = c;
+  } catch(e) { turnos = []; cicloActivo = '15-30'; }
+}
+
+function guardarEstado() {
+  localStorage.setItem('nf_turnos_2026', JSON.stringify(turnos));
+  localStorage.setItem('nf_ciclo_2026', cicloActivo);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FORMATO
+══════════════════════════════════════════════════════════════ */
+const COP  = n => Math.round(n).toLocaleString('es-CO');
+const $    = n => '$' + COP(n);
+const $neg = n => '-$' + COP(Math.abs(n));
+const h2   = n => n.toFixed(2);
+const hhmm = (date) => date.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit', hour12:false });
+const ddmm = (date) => date.toLocaleDateString('es-CO', { day:'2-digit', month:'short' });
+const dias  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+/* ══════════════════════════════════════════════════════════════
+   DEBOUNCE UTILITY — evita recálculos excesivos en inputs rápidos
+══════════════════════════════════════════════════════════════ */
+function debounce(fn, ms) {
+  let timer;
+  return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+}
+const recalcularDebounced = debounce(() => recalcular(), 120);
+
+/* ══════════════════════════════════════════════════════════════
+   UI — RECALCULAR LIQUIDACIÓN
+══════════════════════════════════════════════════════════════ */
+function recalcular() {
+  const salario = +document.getElementById('salarioBase').value || 0;
+  const dias    = +document.getElementById('diasTrabajados').value || 30;
+  const hED     = +document.getElementById('hED').value || 0;
+  const hEN     = +document.getElementById('hEN').value || 0;
+  const hN      = +document.getElementById('hN').value || 0;
+  const hD      = +document.getElementById('hD').value || 0;
+  const periodo = document.getElementById('periodo').value;
+  const nombre  = document.getElementById('nombre').value.trim();
+  const cargo   = document.getElementById('cargo').value.trim();
+
+  const R = liquidar({ salario, dias, hED, hEN, hN, hD, periodo });
+
+  // Jornada alert
+  document.getElementById('jornadaAlert').style.display =
+    R.horas === 42 ? 'flex' : 'none';
+
+  // Hora ord tags
+  document.getElementById('jornadaHorasTag').textContent = R.horas;
+  document.getElementById('valorHoraOrd').textContent = $(R.horaOrd);
+
+  // SMMLV ratio
+  document.getElementById('smmlvRatio').textContent = (salario / NOMINA_CONFIG.SMMLV).toFixed(2);
+
+  // Auxilio
+  document.getElementById('auxilioInfo').style.display = R.aplicaAux ? 'inline-flex' : 'none';
+
+  // Summary
+  document.getElementById('summaryNombre').textContent = nombre || '—';
+  document.getElementById('summaryCargo').textContent  = cargo  || '—';
+  document.getElementById('summaryPeriodo').textContent =
+    document.getElementById('periodo').selectedOptions[0].text.replace(' 2026','');
+
+  // Neto
+  document.getElementById('netoNum').textContent  = COP(R.neto);
+  document.getElementById('netoSmmlv').textContent = (R.neto/NOMINA_CONFIG.SMMLV).toFixed(2) + '× SMMLV';
+
+  // KPIs
+  document.getElementById('kDevengado').textContent  = $(R.devTotal);
+  document.getElementById('kDeducciones').textContent= $neg(R.totalDed);
+  document.getElementById('kHoraOrd').textContent    = $(R.horaOrd);
+  document.getElementById('kSalud').textContent      = $neg(R.dSalud);
+  document.getElementById('kPension').textContent    = $neg(R.dPension);
+  document.getElementById('kRecargos').textContent   = $(R.totalRecargos);
+
+  // Accordions: ingresos
+  let rowsIng = `<div class="det-row"><div class="det-concept">Salario base proporcional (${dias}/30 días)<span class="ref">CST Art.133</span></div><span class="det-val dv-green">${$(R.salProp)}</span></div>`;
+  if (R.aplicaAux)      rowsIng += detRow(`Auxilio de transporte (${dias}/30)`, $(R.auxilio), 'Ley 15/1959', 'green');
+  if (hED > 0)          rowsIng += detRow(`H. Extra Diurna (${hED}h × 1.25)`, $(R.vED), 'CST Art.168', 'green');
+  if (hEN > 0)          rowsIng += detRow(`H. Extra Nocturna (${hEN}h × 1.75)`, $(R.vEN), 'CST Art.168', 'green');
+  if (hN  > 0)          rowsIng += detRow(`Recargo Nocturno (${hN}h × 0.35)`, $(R.vN), 'CST Art.168', 'green');
+  if (hD  > 0)          rowsIng += detRow(`Rec. Dominical/Festivo (${hD}h × 1.00) — Ley 2381`, $(R.vD), 'CST Art.179', 'green');
+  document.getElementById('rows-ing').innerHTML = rowsIng;
+  document.getElementById('aTotal-ing').textContent = $(R.devTotal);
+
+  // Deducciones
+  let rowsDed = '';
+  rowsDed += detRow('Aporte salud empleado (4%)', $neg(R.dSalud), 'Ley 100/1993', 'red');
+  rowsDed += detRow('Aporte pensión empleado (4%)', $neg(R.dPension), 'Ley 100/1993', 'red');
+  if (R.dSolid > 0) rowsDed += detRow('Fondo solidaridad pensional', $neg(R.dSolid), 'L.100 Art.27', 'red');
+  document.getElementById('rows-ded').innerHTML = '<div style="font-size:0.72rem;color:var(--ink-400);margin-bottom:8px;font-style:italic;">Base de cotización = devengado salarial (excluye auxilio transporte)</div>' + rowsDed;
+  document.getElementById('aTotal-ded').textContent = $neg(R.totalDed);
+
+  // Parafiscales
+  const rowsPara = document.getElementById('rows-para');
+  const newParaContent = detRow('Salud empleador (8.5%)', $(R.eS), 'Ley 100/1993', 'blue')
+    + detRow('Pensión empleador (12%)', $(R.eP), 'Ley 100/1993', 'blue')
+    + detRow('ARL Clase I (0.522%)', $(R.eARL), 'Dec.1607/2002', 'blue')
+    + detRow('SENA (2%)', $(R.eSENA), 'Ley 119/1994', 'blue')
+    + detRow('ICBF (3%)', $(R.eICBF), 'Dec.341/1995', 'blue')
+    + detRow('Caja Compensación (4%)', $(R.eCaja), 'Ley 21/1982', 'blue');
+  rowsPara.innerHTML = '<div style="font-size:0.72rem;color:var(--ink-400);margin-bottom:8px;font-style:italic;">Costo del empleador — no afectan el neto</div>' + newParaContent;
+  const totalPara = R.eS + R.eP + R.eARL + R.eSENA + R.eICBF + R.eCaja;
+  document.getElementById('aTotal-para').textContent = $(totalPara);
+
+  // Provisiones
+  const rowsProv = document.getElementById('rows-prov');
+  rowsProv.innerHTML = '<div style="font-size:0.72rem;color:var(--ink-400);margin-bottom:8px;font-style:italic;">Provisión mensual — pagos diferidos al empleado</div>'
+    + detRow('Prima de servicios (1/12 = 8.33%)', $(R.prima), 'CST Art.306', 'amber')
+    + detRow('Cesantías (1/12 = 8.33%)', $(R.cesantias), 'CST Art.249', 'amber')
+    + detRow('Intereses s/cesantías (1%/mes)', $(R.intCes), 'CST Art.268', 'amber')
+    + detRow('Vacaciones (15/360 = 4.17%)', $(R.vacaciones), 'CST Art.186', 'amber');
+  const totalProv = R.prima + R.cesantias + R.intCes + R.vacaciones;
+  document.getElementById('aTotal-prov').textContent = $(totalProv);
+
+  // Footer
+  document.getElementById('ftDevengado').textContent  = $(R.devTotal);
+  document.getElementById('ftDeducciones').textContent= $neg(R.totalDed);
+  document.getElementById('ftNeto').textContent       = $(R.neto);
+
+  // Hero & topbar
+  document.getElementById('heroNeto').textContent = $(R.neto);
+  document.getElementById('chipJornada').textContent  = R.horas + 'h/sem';
+}
+
+function detRow(concepto, valor, ref, clase) {
+  return `<div class="det-row">
+    <div class="det-concept">${concepto}<span class="ref">${ref}</span></div>
+    <span class="det-val dv-${clase}">${valor}</span>
+  </div>`;
+}
+
+function actualizarJornada() {
+  const p = document.getElementById('periodo').value;
+  const h = getJornadaHoras(p);
+  document.getElementById('chipJornada').textContent = h + 'h/sem';
+  document.getElementById('chipJornada').className = 'meta-chip ' + (h === 42 ? 'active' : '');
+}
+
+function usarSMMLV() {
+  document.getElementById('salarioBase').value = NOMINA_CONFIG.SMMLV;
+  recalcular();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ACCORDION
+══════════════════════════════════════════════════════════════ */
+function toggleAcc(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════════ */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'turnos') renderTurnos();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CICLO DE PAGO
+══════════════════════════════════════════════════════════════ */
+function setCiclo(ciclo) {
+  cicloActivo = ciclo;
+  document.getElementById('cicloBtn1530').classList.toggle('active', ciclo === '15-30');
+  document.getElementById('cicloBtn520').classList.toggle('active', ciclo === '5-20');
+  guardarEstado();
+  renderTurnos();
+}
+
+function getQuincena(fecha) {
+  const d = fecha.getDate();
+  if (cicloActivo === '15-30') {
+    return d <= 15 ? 'Q1' : 'Q2';
+  } else {
+    return d <= 20 ? (d <= 5 ? 'Q1' : 'Q2') : 'Q2';
+  }
+}
+
+function getQuincenaLabel(fecha) {
+  const d = fecha.getDate();
+  const mes = fecha.toLocaleDateString('es-CO', { month:'long' });
+  if (cicloActivo === '15-30') {
+    return d <= 15 ? `1ª quincena ${mes} (1–15)` : `2ª quincena ${mes} (16–30)`;
+  } else {
+    return d <= 5 ? `1ª quincena ${mes} (1–5)` : `2ª quincena ${mes} (6–20)`;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GESTIÓN DE TURNOS
+══════════════════════════════════════════════════════════════ */
+function toggleFormTurno() {
+  const form = document.getElementById('formTurno');
+  const visible = form.style.display !== 'none';
+  form.style.display = visible ? 'none' : 'block';
+
+  if (!visible) {
+    // Poner fecha/hora por defecto: hoy a la hora actual redondeada
+    const now = new Date();
+    now.setMinutes(0, 0, 0);
+    const nowISO = now.toISOString().slice(0,16);
+    const later  = new Date(now.getTime() + 8*3600_000);
+    const laterISO = later.toISOString().slice(0,16);
+    document.getElementById('turnoEntrada').value = nowISO;
+    document.getElementById('turnoSalida').value  = laterISO;
+    previewTurno();
+  }
+}
+
+function previewTurno() {
+  const e = document.getElementById('turnoEntrada').value;
+  const s = document.getElementById('turnoSalida').value;
+  const sal = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
+  const previewEl = document.getElementById('turnoPreview');
+
+  if (!e || !s) { previewEl.style.display = 'none'; return; }
+
+  const res = analizarTurno(e, s, sal);
+  if (!res) { previewEl.style.display = 'none'; return; }
+
+  previewEl.style.display = 'block';
+  previewEl.innerHTML = `
+    <div style="background:white;border:1px solid var(--violet-200);border-radius:var(--r-md);padding:10px 12px;font-size:0.78rem;">
+      <div style="color:var(--ink-500);margin-bottom:6px;font-weight:600;">Vista previa del turno</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <span>⏱ <b>${h2(res.totalHoras)}h</b> totales</span>
+        <span>☀️ <b>${h2(res.horasDiurnas)}h</b> diurnas</span>
+        <span>🌙 <b>${h2(res.horasNocturnas)}h</b> nocturnas</span>
+        ${res.hayDomFest ? '<span style="color:var(--teal-600);font-weight:700;">🟢 Dom/Festivo</span>' : ''}
+      </div>
+      <div style="margin-top:6px;color:var(--emerald-600);font-family:\'JetBrains Mono\',monospace;font-weight:700;">
+        Valor estimado: ${$(res.valorTurno)}
+      </div>
+    </div>`;
+}
+
+// Actualizar preview en tiempo real
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('turnoEntrada').addEventListener('input', previewTurno);
+  document.getElementById('turnoSalida').addEventListener('input',  previewTurno);
+});
+
+function agregarTurno() {
+  const e = document.getElementById('turnoEntrada').value;
+  const s = document.getElementById('turnoSalida').value;
+  if (!e || !s) { alert('Ingresa fecha y hora de entrada y salida.'); return; }
+
+  const sal = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
+  const res = analizarTurno(e, s, sal);
+  if (!res) { alert('La salida debe ser posterior a la entrada.'); return; }
+
+  turnos.push({
+    id: Date.now(),
+    entrada: e,
+    salida:  s,
+  });
+
+  guardarEstado();
+  toggleFormTurno();
+  renderTurnos();
+}
+
+function eliminarTurno(id) {
+  turnos = turnos.filter(t => t.id !== id);
+  guardarEstado();
+  renderTurnos();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RENDER TURNOS
+══════════════════════════════════════════════════════════════ */
+function renderTurnos() {
+  const sal = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
+  const horas = getJornadaHoras('2026-07');
+  const horaOrd = horaOrdinaria(sal, horas);
+  document.getElementById('horaOrdTurnos').textContent = $(horaOrd);
+
+  const list = document.getElementById('turnosList');
+  const count = document.getElementById('countTurnos');
+  const heroT = document.getElementById('heroTurnos');
+
+  count.textContent = turnos.length + ' turno' + (turnos.length !== 1 ? 's' : '');
+  heroT.textContent = turnos.length;
+
+  if (turnos.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📅</div>
+      <div class="empty-txt">
+        <strong>Sin turnos registrados</strong>
+        Haz clic en "Agregar Turno" para comenzar.
+      </div>
+    </div>`;
+    renderResumenTurnos([], sal);
+    return;
+}
+
+  // Ordenar por entrada
+  const sorted = [...turnos].sort((a,b) => new Date(a.entrada) - new Date(b.entrada));
+
+  // Agrupar por quincena
+  const groups = {};
+  for (const t of sorted) {
+    const res = analizarTurno(t.entrada, t.salida, sal);
+    if (!res) continue;
+    const key = getQuincenaLabel(res.entrada);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push({ ...t, res });
+  }
+
+  let html = '';
+  let totalTurnos = [];
+
+  for (const [qLabel, items] of Object.entries(groups)) {
+    const subTotal = items.reduce((s, i) => s + i.res.valorTurno, 0);
+    const totalH   = items.reduce((s, i) => s + i.res.totalHoras, 0);
+
+    html += `<div class="quincena-group">
+      <div class="quincena-label">
+        ${qLabel}
+        <span class="quincena-subtotal">${h2(totalH)}h · ${$(subTotal)}</span>
+      </div>`;
+
+    for (const item of items) {
+      const r = item.res;
+      const eDate = r.entrada;
+      const sDate = r.salida;
+      const diaSem = dias[eDate.getDay()];
+      const esDom  = esDomingo(eDate) || esDomingo(sDate);
+      const esFest = esFestivo(eDate) || esFestivo(sDate);
+
+      let cardClass = 'turno-card';
+      if (esDom || esFest) cardClass += ' dominical';
+      else if (r.horasNocturnas > r.horasDiurnas) cardClass += ' nocturno-completo';
+
+      let tags = '';
+      if (r.horasDiurnas > 0)   tags += `<span class="t-tag tt-diurno">☀️ ${h2(r.horasDiurnas)}h diurnas</span>`;
+      if (r.horasNocturnas > 0) tags += `<span class="t-tag tt-nocturno">🌙 ${h2(r.horasNocturnas)}h nocturnas</span>`;
+      if (esDom)  tags += `<span class="t-tag tt-domingo">Dom +100%</span>`;
+      if (esFest && !esDom) tags += `<span class="t-tag tt-festivo">Festivo +100%</span>`;
+
+      html += `<div class="${cardClass}">
+        <button class="turno-del-btn" onclick="eliminarTurno(${item.id})">✕</button>
+        <div class="turno-fecha">
+          <div class="turno-dia-num ${(esDom||esFest)?'dom':''}">${eDate.getDate()}</div>
+          <div class="turno-dia-nom ${(esDom||esFest)?'dom':''}">${diaSem}</div>
+          <div style="font-size:0.6rem;color:var(--ink-300);margin-top:1px;">${ddmm(eDate)}</div>
+        </div>
+        <div class="turno-sep"></div>
+        <div class="turno-info">
+          <div class="turno-horario">
+            ${hhmm(eDate)}<span class="arrow">→</span>${hhmm(sDate)}
+            ${sDate.getDate() !== eDate.getDate() ? '<span style="font-size:0.65rem;color:var(--ink-400)">+1d</span>' : ''}
+          </div>
+          <div class="turno-dur">${h2(r.totalHoras)} horas totales</div>
+          <div class="turno-tags">${tags}</div>
+        </div>
+        <div class="turno-monto">
+          <div class="turno-monto-val">${$(r.valorTurno)}</div>
+          <div class="turno-monto-det">HO: ${$(r.horaOrd)}</div>
+        </div>
+      </div>`;
+
+      totalTurnos.push(r);
+    }
+
+    html += `</div>`;
+  }
+
+  list.innerHTML = html;
+  renderResumenTurnos(totalTurnos, sal);
+}
+
+function renderResumenTurnos(resultados, sal) {
+  const el = document.getElementById('resumenTurnos');
+  if (!resultados.length) {
+    el.innerHTML = '<div style="font-size:0.82rem;color:var(--ink-400);text-align:center;padding:1rem 0;">Agrega turnos para ver el resumen aquí.</div>';
+    return;
+  }
+
+  const totalH   = resultados.reduce((s,r) => s + r.totalHoras, 0);
+  const totalHD  = resultados.reduce((s,r) => s + r.horasDiurnas, 0);
+  const totalHN  = resultados.reduce((s,r) => s + r.horasNocturnas, 0);
+  const totalV   = resultados.reduce((s,r) => s + r.valorTurno, 0);
+  const nDom     = resultados.filter(r => r.hayDomFest).length;
+
+  // Deducciones aproximadas sobre valor turnos
+  const dSalud  = totalV * NOMINA_CONFIG.APORTES_EMPLEADO.SALUD;
+  const dPension= totalV * NOMINA_CONFIG.APORTES_EMPLEADO.PENSION;
+  const netoT   = totalV - dSalud - dPension;
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      ${kpiCard('Total horas', h2(totalH)+'h', 'var(--ink-700)')}
+      ${kpiCard('Total valor turnos', $(totalV), 'var(--emerald-600)')}
+      ${kpiCard('Horas diurnas', h2(totalHD)+'h', 'var(--amber-600)')}
+      ${kpiCard('Horas nocturnas', h2(totalHN)+'h', 'var(--violet-600)')}
+    </div>
+    <div style="background:var(--emerald-50);border:1px solid var(--emerald-100);border-radius:var(--r-md);padding:10px 12px;margin-top:4px;">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--emerald-600);font-weight:700;margin-bottom:4px;">Neto aprox. turnos (después deducciones 8%)</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--emerald-700);">${$(netoT)}</div>
+    </div>
+    ${nDom > 0 ? `<div style="font-size:0.75rem;color:var(--teal-600);margin-top:8px;">🟢 ${nDom} turno(s) con recargo dominical/festivo (100% — Ley 2381/2024)</div>` : ''}
+  `;
+}
+
+function kpiCard(lbl, val, color) {
+  return `<div style="background:var(--ink-50);border-radius:var(--r-md);padding:10px;">
+    <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-400);font-weight:600;margin-bottom:2px;">${lbl}</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:${color};">${val}</div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FAB
+══════════════════════════════════════════════════════════════ */
+function toggleFab() {
+  fabOpen = !fabOpen;
+  document.getElementById('fabMenu').classList.toggle('open', fabOpen);
+  document.getElementById('fabBtn').classList.toggle('open', fabOpen);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PDF EXPORT — Desprendible de pago profesional
+══════════════════════════════════════════════════════════════ */
+function generarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const W = 210;
+
+  const salario = +document.getElementById('salarioBase').value || 0;
+  const dias    = +document.getElementById('diasTrabajados').value || 30;
+  const hED     = +document.getElementById('hED').value || 0;
+  const hEN     = +document.getElementById('hEN').value || 0;
+  const hN      = +document.getElementById('hN').value || 0;
+  const hD      = +document.getElementById('hD').value || 0;
+  const periodo = document.getElementById('periodo').value;
+  const nombre  = document.getElementById('nombre').value || 'Empleado';
+  const cargo   = document.getElementById('cargo').value || '—';
+  const perLabel= document.getElementById('periodo').selectedOptions[0].text;
+
+  const R = liquidar({ salario, dias, hED, hEN, hN, hD, periodo });
+
+  // Header
+  doc.setFillColor(9,9,15);
+  doc.rect(0, 0, W, 38, 'F');
+  doc.setFillColor(20, 25, 50);
+  doc.rect(0, 24, W, 14, 'F');
+
+  doc.setFontSize(18); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text('DESPRENDIBLE DE PAGO', 14, 16);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,150);
+  doc.text('NóminaFlow · Colombia 2026 · Legislación CST + Ley 2381/2024', 14, 22);
+  doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(200,200,255);
+  doc.text(`Período: ${perLabel}`, 14, 33);
+  doc.text(`Jornada: ${R.horas}h/semana (Ley 2101/2021)`, W - 14, 33, { align:'right' });
+
+  let y = 48;
+
+  // Empleado box
+  doc.setFillColor(248,248,252); doc.roundedRect(10, y, W-20, 24, 3, 3, 'F');
+  doc.setDrawColor(220,220,235); doc.roundedRect(10, y, W-20, 24, 3, 3, 'S');
+  doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(120,120,160);
+  doc.text('EMPLEADO', 15, y+7);
+  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(15,15,30);
+  doc.text(nombre, 15, y+15);
+  doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,140);
+  doc.text(cargo, 15, y+21);
+  doc.setFontSize(8); doc.setTextColor(100,100,140);
+  doc.text(`Días trabajados: ${dias}/30 · H. Ordinaria: ${$(R.horaOrd)} · SMMLV: ${(salario/NOMINA_CONFIG.SMMLV).toFixed(2)}×`, W-14, y+15, {align:'right'});
+
+  y += 32;
+
+  const sec = (tit, rows, r,g,b) => {
+    doc.setFillColor(r,g,b); doc.rect(10, y, W-20, 7.5, 'F');
+    doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text(tit, 14, y+5.2);
+    y += 7.5;
+    rows.forEach((row, i) => {
+      if (i % 2 === 0) { doc.setFillColor(250,250,254); doc.rect(10, y, W-20, 6.5, 'F'); }
+      doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(70,70,110);
+      doc.text(row[0], 14, y+4.5);
+      if(row[2]) { doc.setFontSize(6.5); doc.setTextColor(170,170,200); doc.text(row[2], 120, y+4.5); doc.setFontSize(7.5); }
+      doc.setFont('helvetica','bold'); doc.setTextColor(row[3]||30, row[4]||30, row[5]||60);
+      doc.text(row[1], W-13, y+4.5, {align:'right'});
+      y += 6.5;
+    });
+    y += 3;
+  };
+
+  // Ingresos
+  const ings = [[`Salario base proporcional (${dias}/30 días)`, $(R.salProp), 'CST Art.133', 0,130,80]];
+  if(R.aplicaAux) ings.push(['Auxilio de transporte', $(R.auxilio), 'Ley 15/1959', 0,130,80]);
+  if(hED>0) ings.push([`H. Extra Diurna (${hED}h × 1.25)`, $(R.vED), 'CST Art.168', 0,130,80]);
+  if(hEN>0) ings.push([`H. Extra Nocturna (${hEN}h × 1.75)`, $(R.vEN), 'CST Art.168', 0,130,80]);
+  if(hN>0)  ings.push([`Rec. Nocturno (${hN}h × 0.35)`, $(R.vN), 'CST Art.168', 0,130,80]);
+  if(hD>0)  ings.push([`Rec. Dominical/Festivo (${hD}h × 1.00) — Ley 2381`, $(R.vD), 'CST Art.179', 0,130,80]);
+  sec('INGRESOS SALARIALES', ings, 5,150,100);
+
+  // Deducciones
+  const deds = [
+    ['Aporte salud empleado (4%)', $neg(R.dSalud), 'Ley 100/1993', 180,50,70],
+    ['Aporte pensión empleado (4%)', $neg(R.dPension), 'Ley 100/1993', 180,50,70],
+  ];
+  if(R.dSolid>0) deds.push(['Fondo solidaridad pensional', $neg(R.dSolid), 'L.100 Art.27', 180,50,70]);
+  sec('DEDUCCIONES DEL EMPLEADO', deds, 180,55,75);
+
+  // Parafiscales
+  sec('APORTES PARAFISCALES — EMPLEADOR', [
+    ['Salud (8.5%)', $(R.eS), 'Ley 100', 80,70,200],
+    ['Pensión (12%)', $(R.eP), 'Ley 100', 80,70,200],
+    ['ARL Clase I (0.522%)', $(R.eARL), 'Dec.1607', 80,70,200],
+    ['SENA (2%)', $(R.eSENA), 'Ley 119', 80,70,200],
+    ['ICBF (3%)', $(R.eICBF), 'Dec.341', 80,70,200],
+    ['Caja Compensación (4%)', $(R.eCaja), 'Ley 21', 80,70,200],
+  ], 90,80,210);
+
+  // Provisiones
+  sec('PROVISIONES PRESTACIONES SOCIALES', [
+    ['Prima de servicios (8.33%)', $(R.prima), 'CST Art.306', 160,100,0],
+    ['Cesantías (8.33%)', $(R.cesantias), 'CST Art.249', 160,100,0],
+    ['Intereses sobre cesantías (1%/mes)', $(R.intCes), 'CST Art.268', 160,100,0],
+    ['Vacaciones (4.17%)', $(R.vacaciones), 'CST Art.186', 160,100,0],
+  ], 180,120,10);
+
+  // Total box
+  y += 4;
+  doc.setFillColor(9,9,15); doc.roundedRect(10, y, W-20, 26, 3, 3, 'F');
+  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(100,100,150);
+  doc.text('DEVENGADO', 16, y+8); doc.text('DEDUCCIONES', 83, y+8); doc.text('NETO A PAGAR', 148, y+8);
+  doc.setFontSize(11); doc.setTextColor(52,211,153); doc.text($(R.devTotal), 16, y+19);
+  doc.setTextColor(251,113,133); doc.text($neg(R.totalDed), 83, y+19);
+  doc.setFontSize(13); doc.setTextColor(255,255,255); doc.text($(R.neto), 148, y+20);
+
+  y += 34;
+  // Firma
+  doc.setDrawColor(200,200,220); doc.setLineWidth(0.3);
+  doc.line(14, y+10, 75, y+10); doc.line(W-75, y+10, W-14, y+10);
+  doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(160,160,200);
+  doc.text('Firma Empleador', 44, y+15, {align:'center'});
+  doc.text('Firma Empleado', W-44, y+15, {align:'center'});
+
+  // Footer
+  doc.setFontSize(6.5); doc.setTextColor(180,180,210);
+  doc.text(
+    `Generado: ${new Date().toLocaleDateString('es-CO')} · SMMLV $1.750.905 · Auxilio $249.095 · Franja nocturna: 19:00–06:00 (Ley 2381/2024)`,
+    W/2, 289, {align:'center'}
+  );
+
+  // Agregar hoja de turnos si hay datos
+  if (turnos.length > 0) {
+    doc.addPage();
+    const sal2 = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
+    doc.setFillColor(9,9,15); doc.rect(0,0,W,25,'F');
+    doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+    doc.text('REPORTE DE TURNOS ROTATIVOS', 14, 16);
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(100,100,150);
+    doc.text(`${nombre} · Ciclo: ${cicloActivo === '15-30' ? 'Cortes 15 y 30' : 'Cortes 5 y 20'}`, W-14, 16, {align:'right'});
+
+    let ty = 34;
+    const sorted2 = [...turnos].sort((a,b) => new Date(a.entrada)-new Date(b.entrada));
+    let totalVal = 0;
+
+    doc.setFillColor(40,40,80); doc.rect(10,ty,W-20,7,'F');
+    doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(200,200,255);
+    doc.text('FECHA', 14, ty+5);
+    doc.text('ENTRADA → SALIDA', 50, ty+5);
+    doc.text('HRS DIURNAS', 100, ty+5);
+    doc.text('HRS NOCTURNAS', 128, ty+5);
+    doc.text('DOM/FEST', 158, ty+5);
+    doc.text('VALOR TURNO', W-14, ty+5, {align:'right'});
+    ty += 7;
+
+    sorted2.forEach((t,i) => {
+      const r = analizarTurno(t.entrada, t.salida, sal2);
+      if (!r) return;
+      totalVal += r.valorTurno;
+      if (i%2===0) { doc.setFillColor(248,248,254); doc.rect(10,ty,W-20,6.5,'F'); }
+      doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(50,50,90);
+      doc.text(r.entrada.toLocaleDateString('es-CO'), 14, ty+4.5);
+      doc.text(`${hhmm(r.entrada)} → ${hhmm(r.salida)}`, 50, ty+4.5);
+      doc.text(h2(r.horasDiurnas)+'h', 100, ty+4.5);
+      doc.text(h2(r.horasNocturnas)+'h', 128, ty+4.5);
+      doc.text(r.hayDomFest ? 'Sí +100%' : '—', 158, ty+4.5);
+      doc.setFont('helvetica','bold'); doc.setTextColor(0,120,60);
+      doc.text($(r.valorTurno), W-13, ty+4.5, {align:'right'});
+      ty += 6.5;
+    });
+
+    ty += 4;
+    doc.setFillColor(9,9,15); doc.roundedRect(10,ty,W-20,12,2,2,'F');
+    doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(52,211,153);
+    doc.text('Total valor turnos:', 14, ty+8);
+    doc.text($(totalVal), W-14, ty+8, {align:'right'});
+  }
+
+  const fname = `Nomina_${nombre.replace(/\s+/g,'_')}_${perLabel.replace(/\s+/g,'_')}.pdf`;
+  doc.save(fname);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EXCEL EXPORT (CSV descargable, compatible con Excel/Sheets)
+══════════════════════════════════════════════════════════════ */
+function exportarExcel() {
+  const salario = +document.getElementById('salarioBase').value || 0;
+  const dias    = +document.getElementById('diasTrabajados').value || 30;
+  const hED     = +document.getElementById('hED').value || 0;
+  const hEN     = +document.getElementById('hEN').value || 0;
+  const hN      = +document.getElementById('hN').value || 0;
+  const hD      = +document.getElementById('hD').value || 0;
+  const periodo = document.getElementById('periodo').value;
+  const nombre  = document.getElementById('nombre').value || 'Empleado';
+  const cargo   = document.getElementById('cargo').value || '—';
+  const perLabel= document.getElementById('periodo').selectedOptions[0].text;
+
+  const R = liquidar({ salario, dias, hED, hEN, hN, hD, periodo });
+  const sal2 = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
+
+  let csv = 'sep=;\n';
+  csv += `NOMINA FLOW - DESPRENDIBLE DE PAGO;;\n`;
+  csv += `Empleado;${nombre};;\n`;
+  csv += `Cargo;${cargo};;\n`;
+  csv += `Período;${perLabel};;\n`;
+  csv += `Jornada;${R.horas}h/semana;;\n\n`;
+
+  csv += `CONCEPTO;VALOR COP;\n`;
+  csv += `Salario base;${Math.round(salario)};\n`;
+  csv += `Salario proporcional (${dias}/30);${Math.round(R.salProp)};\n`;
+  if(R.aplicaAux) csv += `Auxilio transporte;${Math.round(R.auxilio)};\n`;
+  if(hED>0) csv += `H.Extra Diurna (${hED}h);${Math.round(R.vED)};\n`;
+  if(hEN>0) csv += `H.Extra Nocturna (${hEN}h);${Math.round(R.vEN)};\n`;
+  if(hN>0)  csv += `Rec.Nocturno (${hN}h);${Math.round(R.vN)};\n`;
+  if(hD>0)  csv += `Rec.Dominical (${hD}h);${Math.round(R.vD)};\n`;
+  csv += `TOTAL DEVENGADO;${Math.round(R.devTotal)};\n\n`;
+
+  csv += `Salud empleado (4%);-${Math.round(R.dSalud)};\n`;
+  csv += `Pensión empleado (4%);-${Math.round(R.dPension)};\n`;
+  if(R.dSolid>0) csv += `Solidaridad pensional;-${Math.round(R.dSolid)};\n`;
+  csv += `TOTAL DEDUCCIONES;-${Math.round(R.totalDed)};\n\n`;
+  csv += `NETO A PAGAR;${Math.round(R.neto)};\n\n`;
+
+  csv += `Costo empleador - Salud (8.5%);${Math.round(R.eS)};\n`;
+  csv += `Costo empleador - Pensión (12%);${Math.round(R.eP)};\n`;
+  csv += `Costo empleador - ARL (0.522%);${Math.round(R.eARL)};\n`;
+  csv += `Costo empleador - SENA (2%);${Math.round(R.eSENA)};\n`;
+  csv += `Costo empleador - ICBF (3%);${Math.round(R.eICBF)};\n`;
+  csv += `Costo empleador - Caja (4%);${Math.round(R.eCaja)};\n\n`;
+
+  csv += `Provisión Prima (8.33%);${Math.round(R.prima)};\n`;
+  csv += `Provisión Cesantías (8.33%);${Math.round(R.cesantias)};\n`;
+  csv += `Int. sobre Cesantías (1%/mes);${Math.round(R.intCes)};\n`;
+  csv += `Provisión Vacaciones (4.17%);${Math.round(R.vacaciones)};\n\n`;
+
+  if (turnos.length > 0) {
+    csv += `\nREGISTRO DE TURNOS;;;;;;\n`;
+    csv += `Fecha;Entrada;Salida;Horas Diurnas;Horas Nocturnas;Dom/Festivo;Valor;\n`;
+    for (const t of turnos) {
+      const r = analizarTurno(t.entrada, t.salida, sal2);
+      if (!r) continue;
+      csv += `${r.entrada.toLocaleDateString('es-CO')};${hhmm(r.entrada)};${hhmm(r.salida)};${h2(r.horasDiurnas)};${h2(r.horasNocturnas)};${r.hayDomFest?'Sí':''};${Math.round(r.valorTurno)};\n`;
+    }
+  }
+
+  const blob = new Blob(['\uFEFF'+csv], { type:'text/csv;charset=utf-8;' });
+  const link  = document.createElement('a');
+  link.href   = URL.createObjectURL(blob);
+  link.download = `Nomina_${nombre.replace(/\s+/g,'_')}_${perLabel.replace(/\s+/g,'_')}.csv`;
+  link.click();
+}
+
+function limpiarTodo() {
+  if (!confirm('¿Eliminar todos los turnos registrados?')) return;
+  turnos = [];
+  guardarEstado();
+  renderTurnos();
+  toggleFab();
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('visible');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════ */
+(function init() {
+  // Fecha actual en topbar
+  const now = new Date();
+  document.getElementById('chipFecha').textContent =
+    now.toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' });
+
+  // Detectar período actual para el select
+  const mes = now.getMonth() + 1;
+  const anio = now.getFullYear();
+  if (anio === 2026) {
+    const opt = document.querySelector(`#periodo option[value="2026-${String(mes).padStart(2,'0')}"]`);
+    if (opt) opt.selected = true;
+  }
+
+  cargarEstado();
+
+  // Restaurar ciclo
+  if (cicloActivo === '5-20') setCiclo('5-20');
+
+  actualizarJornada();
+  recalcular();
+
+  // Abrir accordions por defecto
+  document.getElementById('acc-ing').classList.add('open');
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   MÓDULO HORARIO FIJO
+   Calcula horas mensuales de un empleado con horario regular
+   considerando franjas diurnas/nocturnas y días de descanso
+══════════════════════════════════════════════════════════════ */
+
+// Estado del horario fijo
+const HF_STATE = {
+  // Días de descanso seleccionados (índice 0=Dom … 6=Sáb)
+  // Por defecto: domingo (0) descansa
+  diasDescanso: new Set([0]),
+};
+
+const HF_DIAS_SEMANA = [
+  { idx: 0, nom: 'Dom', ico: '😴' },
+  { idx: 1, nom: 'Lun', ico: '💼' },
+  { idx: 2, nom: 'Mar', ico: '💼' },
+  { idx: 3, nom: 'Mié', ico: '💼' },
+  { idx: 4, nom: 'Jue', ico: '💼' },
+  { idx: 5, nom: 'Vie', ico: '💼' },
+  { idx: 6, nom: 'Sáb', ico: '😴' },
+];
+
+function renderHFDias() {
+  const grid = document.getElementById('hfDiasGrid');
+  if (!grid) return;
+  grid.innerHTML = HF_DIAS_SEMANA.map(d => {
+    const isDescanso = HF_STATE.diasDescanso.has(d.idx);
+    return `<button
+      type="button"
+      class="hf-dia-btn ${isDescanso ? 'descanso' : ''}"
+      onclick="toggleHFDia(${d.idx})"
+      title="${isDescanso ? 'Día de descanso — click para marcar como laboral' : 'Día laboral — click para marcar como descanso'}"
+      aria-pressed="${isDescanso}">
+      <span class="dia-ico">${isDescanso ? '🛌' : d.ico}</span>
+      <span class="dia-nom">${d.nom}</span>
+    </button>`;
+  }).join('');
+}
+
+function toggleHFDia(idx) {
+  if (HF_STATE.diasDescanso.has(idx)) {
+    // Mínimo debe quedar 1 día laboral (máx 6 días descanso)
+    if (HF_STATE.diasDescanso.size >= 6) return;
+    HF_STATE.diasDescanso.delete(idx);
+  } else {
+    HF_STATE.diasDescanso.add(idx);
+  }
+  renderHFDias();
+  calcularHorarioFijo();
+}
+
+/**
+ * Convierte "HH:MM" a minutos desde medianoche
+ */
+function timeToMins(t) {
+  if (!t) return 0;
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+
+/**
+ * Calcula minutos diurnos y nocturnos en una franja [inicioMins, finMins]
+ * Franja nocturna: 19:00 (1140 min) a 06:00 (360 min)
+ */
+function franjaMinutos(inicioMins, finMins) {
+  if (finMins <= inicioMins) return { diurno: 0, nocturno: 0 };
+  const DI = NOMINA_CONFIG.FRANJAS.DIURNO_INICIO_H * 60;   // 360 min (06:00)
+  const DF = NOMINA_CONFIG.FRANJAS.DIURNO_FIN_H * 60;      // 1140 min (19:00)
+
+  let diurno = 0, nocturno = 0;
+  const total = finMins - inicioMins;
+
+  // Intersección con franja diurna [360, 1140)
+  const dStart = Math.max(inicioMins, DI);
+  const dEnd   = Math.min(finMins, DF);
+  if (dEnd > dStart) diurno = dEnd - dStart;
+
+  nocturno = total - diurno;
+  return { diurno, nocturno };
+}
+
+function calcularHorarioFijo() {
+  const em = document.getElementById('hfEntradaMañana')?.value;
+  const sm = document.getElementById('hfSalidaMañana')?.value;
+  const et = document.getElementById('hfEntradaTarde')?.value;
+  const st = document.getElementById('hfSalidaTarde')?.value;
+
+  if (!em || !sm || !et || !st) return;
+
+  const emM = timeToMins(em), smM = timeToMins(sm);
+  const etM = timeToMins(et), stM = timeToMins(st);
+
+  // Validar que salida > entrada en cada franja
+  if (smM <= emM || stM <= etM) {
+    document.getElementById('hfResumen').style.display = 'none';
+    document.getElementById('hfApplyBtn').style.display = 'none';
+    return;
+  }
+
+  // Calcular horas por franja
+  const franja1 = franjaMinutos(emM, smM);
+  const franja2 = franjaMinutos(etM, stM);
+
+  const minsDiurnosDia  = franja1.diurno  + franja2.diurno;
+  const minsNocturnosDia= franja1.nocturno + franja2.nocturno;
+  const minsTotalesDia  = minsDiurnosDia + minsNocturnosDia;
+
+  const horasDia = minsTotalesDia / 60;
+
+  // Días laborales por semana
+  const diasLaboralesSem = 7 - HF_STATE.diasDescanso.size;
+
+  // Días laborales por mes (aproximación: semanas × días laborales/sem)
+  // Usamos 4.333 semanas/mes estándar contable
+  const diasLaboralesMes = Math.round(diasLaboralesSem * NOMINA_CONFIG.SEMANAS_POR_MES);
+
+  const horasDiurnasMes  = (minsDiurnosDia  / 60) * diasLaboralesMes;
+  const horasNocturnasMes= (minsNocturnosDia / 60) * diasLaboralesMes;
+  const horasTotalesMes  = horasDia * diasLaboralesMes;
+
+  // Actualizar resumen
+  document.getElementById('hfHorasDia').textContent = horasDia.toFixed(2) + 'h';
+  document.getElementById('hfDiasLab').textContent  = diasLaboralesMes + ' días/mes';
+  document.getElementById('hfHorasMes').textContent = horasDiurnasMes.toFixed(1) + 'h';
+  document.getElementById('hfHorasNoch').textContent= horasNocturnasMes > 0
+    ? horasNocturnasMes.toFixed(1) + 'h'
+    : '0h (horario 100% diurno)';
+
+  document.getElementById('hfResumen').style.display = 'block';
+  document.getElementById('hfApplyBtn').style.display = 'block';
+
+  // Actualizar subtítulo del toggle
+  const desNoms = [...HF_STATE.diasDescanso]
+    .sort()
+    .map(i => HF_DIAS_SEMANA[i].nom)
+    .join(', ');
+  document.getElementById('horarioFijoSub').textContent =
+    `${em}–${sm} · ${et}–${st} · Descanso: ${desNoms || '—'}`;
+
+  // Guardar en state para aplicar
+  HF_STATE.resultado = {
+    horasDia, diasLaboralesMes,
+    horasDiurnasMes, horasNocturnasMes, horasTotalesMes,
+    diasLaboralesSem,
+  };
+}
+
+/**
+ * Aplica el horario fijo al formulario de liquidación:
+ * - Actualiza días trabajados
+ * - Actualiza horas de recargo nocturno (si las hay)
+ * El resto del cálculo lo maneja recalcular()
+ */
+function aplicarHorarioFijo() {
+  if (!HF_STATE.resultado) return;
+  const r = HF_STATE.resultado;
+
+  // Actualizar días trabajados en el campo de salario
+  const diasInput = document.getElementById('diasTrabajados');
+  if (diasInput) diasInput.value = r.diasLaboralesMes;
+
+  // Actualizar recargo nocturno si hay horas nocturnas
+  const hNInput = document.getElementById('hN');
+  if (hNInput) {
+    hNInput.value = r.horasNocturnasMes > 0
+      ? parseFloat(r.horasNocturnasMes.toFixed(2))
+      : 0;
+  }
+
+  recalcular();
+
+  // Feedback visual al usuario
+  const btn = document.getElementById('hfApplyBtn');
+  const originalText = btn.textContent;
+  btn.textContent = '✓ ¡Aplicado correctamente!';
+  btn.style.background = 'linear-gradient(135deg, var(--emerald-600), var(--emerald-500))';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = '';
+    btn.disabled = false;
+  }, 2000);
+}
+
+function toggleHorarioFijo() {
+  const wrap = document.getElementById('horarioFijoToggle').closest('.horario-fijo-wrap');
+  const isOpen = wrap.classList.toggle('open');
+  document.getElementById('horarioFijoToggle').setAttribute('aria-expanded', isOpen);
+  document.getElementById('horarioFijoChevron').style.transform = isOpen ? 'rotate(90deg)' : '';
+  if (isOpen) {
+    renderHFDias();
+    calcularHorarioFijo();
+  }
+}
+
+</script>
+</body>
+</html>
