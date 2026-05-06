@@ -1615,7 +1615,7 @@ input[type="datetime-local"] {
             </div>
 
             <div class="hora-tag">
-              <span class="hora-tag-left">🕐 Valor hora ordinaria (<span id="jornadaHorasTag">44</span>h/sem × 4.333)</span>
+              <span class="hora-tag-left">🕐 Valor hora ordinaria (<span id="jornadaHorasTag">44</span>h × 5 = <span id="horasMesTag">220</span>h/mes)</span>
               <span class="hora-tag-val" id="valorHoraOrd">$0</span>
             </div>
 
@@ -1650,7 +1650,7 @@ input[type="datetime-local"] {
                 <input type="number" id="hN" value="0" min="0" oninput="recalcularDebounced()">
               </div>
               <div class="hora-box">
-                <label>Dominical/Fest. <span class="recargo-pill rp-d">+100%</span></label>
+                <label>Dominical/Fest. <span class="recargo-pill rp-d" id="domPill">+80%</span></label>
                 <input type="number" id="hD" value="0" min="0" oninput="recalcularDebounced()">
               </div>
             </div>
@@ -1950,21 +1950,37 @@ const NOMINA_CONFIG = {
   UMBRAL_AUXILIO_SMMLV: 2,
 
   JORNADA: {
-    HORAS_ANTES:   44,
-    HORAS_DESPUES: 42,
-    FECHA_CAMBIO:  '2026-07-15',
+    HORAS_ANTES:    44,          // Vigente 01-ene-2026 al 14-jul-2026
+    HORAS_DESPUES:  42,          // Vigente desde 15-jul-2026 (Ley 2101/2021)
+    FECHA_CAMBIO:   '2026-07-15',
+    // Horas mensuales = horas_semanales × 5 (estándar liquidación Colombia)
+    // Verificado: $1.750.905 / 220 = $7.959 (tabla Ministerio del Trabajo 2026)
+    HORAS_MES_44:   220,         // 44h × 5 = 220h/mes → HO = $7.959
+    HORAS_MES_42:   210,         // 42h × 5 = 210h/mes → HO = $8.338
   },
+
+  // Semanas promedio por mes — estándar contable (usado por módulo horario fijo)
   SEMANAS_POR_MES: 4.333,
 
   // Franja nocturna — Ley 2381 de 2024 (19:00 a 06:00)
   FRANJAS: { DIURNO_INICIO_H: 6, DIURNO_FIN_H: 19, NOCTURNO_INICIO_H: 19, NOCTURNO_FIN_H: 6 },
 
   RECARGOS: {
-    EXTRA_DIURNO:    0.25,
-    EXTRA_NOCTURNO:  0.75,
-    NOCTURNO_ORD:    0.35,
-    DOMINICAL_BASE:  1.00,   // 100% sobre HO — Ley 2381/2024
-    EXTRA_DOMINICAL: 1.25,
+    // CST Art.168 — recargos sobre la hora ordinaria
+    EXTRA_DIURNO:    0.25,        // H. Extra diurna: HO × 1.25
+    EXTRA_NOCTURNO:  0.75,        // H. Extra nocturna: HO × 1.75
+    NOCTURNO_ORD:    0.35,        // Recargo nocturno ordinario: HO × 1.35
+
+    // Dominical/Festivo — Ley 2381 de 2024 (escala progresiva)
+    // CST Art.179 mod. — recargo solo (se suma a la hora ordinaria ya pagada)
+    DOMINICAL_BASE:  0.80,        // Recargo actual (hasta 30-jun-2026)
+
+    // Escalado automático por fecha (calculado en getDomFactor())
+    DOMINICAL_FECHAS: [
+      { desde: '2024-04-01', hasta: '2026-06-30', recargo: 0.80 },
+      { desde: '2026-07-01', hasta: '2027-06-30', recargo: 0.90 },
+      { desde: '2027-07-01', hasta: null,          recargo: 1.00 },
+    ],
   },
 
   APORTES_EMPLEADO: { SALUD: 0.04, PENSION: 0.04 },
@@ -2015,8 +2031,36 @@ function getJornadaHoras(periodoStr) {
     : NOMINA_CONFIG.JORNADA.HORAS_ANTES;
 }
 
+/**
+ * Valor hora ordinaria — Ministerio del Trabajo Colombia 2026.
+ * Divisor: horas_sem × 5 (mes laboral estándar colombiano).
+ *   44h/sem → 220h/mes → HO = $1.750.905 / 220 = $7.959
+ *   42h/sem → 210h/mes → HO = $1.750.905 / 210 = $8.338 (desde 15-jul-2026)
+ */
 function horaOrdinaria(salario, horas) {
-  return salario / (horas * NOMINA_CONFIG.SEMANAS_POR_MES);
+  const horasMes = horas === 44
+    ? NOMINA_CONFIG.JORNADA.HORAS_MES_44
+    : NOMINA_CONFIG.JORNADA.HORAS_MES_42;
+  return salario / horasMes;
+}
+
+/**
+ * Recargo dominical vigente por fecha — Ley 2381/2024 escala progresiva.
+ *   Hasta 30-jun-2026:  80%  (factor total 1.80 × HO)
+ *   01-jul-2026 a 2027: 90%  (factor total 1.90 × HO)
+ *   Desde jul-2027:    100% (factor total 2.00 × HO)
+ */
+function getDomFactor(periodoStr) {
+  const [y, m] = periodoStr.split('-').map(Number);
+  const fecha = new Date(y, m - 1, 1);
+  for (const tramo of NOMINA_CONFIG.RECARGOS.DOMINICAL_FECHAS) {
+    const desde = new Date(tramo.desde);
+    const hasta = tramo.hasta ? new Date(tramo.hasta) : null;
+    if (fecha >= desde && (hasta === null || fecha <= hasta)) {
+      return tramo.recargo;
+    }
+  }
+  return NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE;
 }
 
 function calcularSolidaridad(salario) {
@@ -2045,10 +2089,11 @@ function liquidar({ salario, dias, hED, hEN, hN, hD, periodo }) {
   const auxilio   = aplicaAux ? NOMINA_CONFIG.AUXILIO_TRANSPORTE * factor : 0;
 
   // Recargos (CST Art.168 / Art.179 — Ley 2381/2024)
+  const domRecargo = getDomFactor(periodo);          // escala: 0.80 / 0.90 / 1.00
   const vED = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.EXTRA_DIURNO)   * hED;   // 1.25×HO
   const vEN = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.EXTRA_NOCTURNO) * hEN;   // 1.75×HO
   const vN  = horaOrd * NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD          * hN;   // 0.35×HO (solo recargo)
-  const vD  = horaOrd * NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE         * hD;  // 1.00×HO (recargo dominical 100%)
+  const vD  = horaOrd * domRecargo                                    * hD;   // recargo dominical dinámico
 
   const totalRecargos = vED + vEN + vN + vD;
 
@@ -2079,7 +2124,7 @@ function liquidar({ salario, dias, hED, hEN, hN, hD, periodo }) {
   const vacaciones  = salProp     * NOMINA_CONFIG.PRESTACIONES.VACACIONES;
 
   return {
-    horas, horaOrd, factor,
+    horas, horaOrd, factor, domRecargo,
     salProp, auxilio, aplicaAux,
     vED, vEN, vN, vD, totalRecargos,
     devSalarial, devTotal,
@@ -2138,6 +2183,13 @@ function calcularFranjas(tsEntrada, tsSalida) {
 /**
  * Analiza un turno completo y determina tipos de horas y recargos.
  * Maneja domingos, festivos y cruces de medianoche correctamente.
+ *
+ * LÓGICA CLAVE PARA TURNOS QUE CRUZAN MEDIANOCHE:
+ * Cuando un turno pasa de un día normal a un domingo/festivo (o viceversa),
+ * el cálculo se divide por segmentos diarios para aplicar el recargo
+ * correcto a cada tramo. Ej: Sáb 22:00 → Dom 06:00:
+ *   - Sáb 22:00–00:00 (2h nocturnas ordinarias): HO × 1.35
+ *   - Dom 00:00–06:00 (6h nocturnas dominicales): HO × (1 + 0.80 + 0.35) = HO × 2.15
  */
 function analizarTurno(entrada, salida, salarioMensual) {
   const tsE = new Date(entrada);
@@ -2145,7 +2197,7 @@ function analizarTurno(entrada, salida, salarioMensual) {
 
   if (tsS <= tsE) return null; // Salida antes o igual que entrada — inválido
 
-  const totalMins = (tsS - tsE) / 60_000;
+  const totalMins  = (tsS - tsE) / 60_000;
   const totalHoras = totalMins / 60;
 
   // Determinar jornada según fecha de entrada
@@ -2153,44 +2205,61 @@ function analizarTurno(entrada, salida, salarioMensual) {
   const horasSem   = getJornadaHoras(periodoStr);
   const horaOrd    = horaOrdinaria(salarioMensual, horasSem);
 
-  // ¿Es dominical o festivo?
-  // Si el turno cruza medianoche, verificamos AMBOS días
-  const isDomFestE = esDomingo(tsE) || esFestivo(tsE);
-  const isDomFestS = esDomingo(tsS) || esFestivo(tsS);
-  const hayDomFest = isDomFestE || isDomFestS;
+  // Recargo dominical vigente para el período
+  const domRec = getDomFactor(periodoStr);
 
-  // Calcular horas diurnas y nocturnas
-  const { horasDiurnas, horasNocturnas } = calcularFranjas(tsE, tsS);
+  // ── Segmentar el turno por días calendario ──────────────────────
+  // Si el turno cruza medianoche, cada tramo de día puede tener distinto recargo.
+  // Construimos segmentos: [ {inicio, fin, esDomFest}, ... ]
+  const segmentos = [];
+  let cursor = new Date(tsE);
 
-  // Calcular valor del turno
-  // Lógica: si el día es dominical/festivo, aplica recargo base (100%) sobre TODAS las horas
-  // Adicionalmente se suman los recargos nocturnos sobre las horas nocturnas
-  let valorTurno = 0;
-  let desglose = {};
+  while (cursor < tsS) {
+    // Fin del día actual = medianoche del mismo día
+    const finDia = new Date(cursor);
+    finDia.setHours(24, 0, 0, 0);
+    const finSeg = finDia < tsS ? finDia : tsS;
 
-  if (hayDomFest) {
-    // Horas dominicales/festivas diurnas: HO × (1 + 1.00) = 2×HO
-    const vDomDiurno  = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE) * horasDiurnas;
-    // Horas dominicales/festivas nocturnas: HO × (1 + 1.00 + 0.35) = 2.35×HO
-    const vDomNocturno= horaOrd * (1 + NOMINA_CONFIG.RECARGOS.DOMINICAL_BASE + NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD) * horasNocturnas;
-    valorTurno = vDomDiurno + vDomNocturno;
-    desglose = {
-      tipo: 'dominical',
-      horasDiurnas, horasNocturnas,
-      vDomDiurno, vDomNocturno,
-    };
-  } else {
-    // Horas ordinarias diurnas: HO × 1 = HO
-    const vOrdDiurno   = horaOrd * horasDiurnas;
-    // Horas ordinarias nocturnas: HO × (1 + 0.35) = 1.35×HO
-    const vOrdNocturno = horaOrd * (1 + NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD) * horasNocturnas;
-    valorTurno = vOrdDiurno + vOrdNocturno;
-    desglose = {
-      tipo: 'ordinario',
-      horasDiurnas, horasNocturnas,
-      vOrdDiurno, vOrdNocturno,
-    };
+    const isDomFest = esDomingo(cursor) || esFestivo(cursor);
+    segmentos.push({ inicio: new Date(cursor), fin: finSeg, isDomFest });
+
+    cursor = finSeg;
   }
+
+  // ── Calcular valor y horas totales sumando todos los segmentos ──
+  let valorTurno     = 0;
+  let horasDiurnas   = 0;
+  let horasNocturnas = 0;
+  let hayDomFest     = false;
+  let isDomFestE     = esDomingo(tsE) || esFestivo(tsE);
+  let isDomFestS     = esDomingo(tsS) || esFestivo(tsS);
+
+  for (const seg of segmentos) {
+    const { horasDiurnas: hD, horasNocturnas: hN } = calcularFranjas(seg.inicio, seg.fin);
+    horasDiurnas   += hD;
+    horasNocturnas += hN;
+
+    if (seg.isDomFest) {
+      hayDomFest = true;
+      // Dom/fest diurno:   HO × (1 + domRec)
+      // Dom/fest nocturno: HO × (1 + domRec + 0.35)
+      valorTurno += horaOrd * (1 + domRec) * hD;
+      valorTurno += horaOrd * (1 + domRec + NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD) * hN;
+    } else {
+      // Ordinario diurno:   HO × 1.00
+      // Ordinario nocturno: HO × 1.35
+      valorTurno += horaOrd * hD;
+      valorTurno += horaOrd * (1 + NOMINA_CONFIG.RECARGOS.NOCTURNO_ORD) * hN;
+    }
+  }
+
+  const desglose = {
+    tipo: hayDomFest ? 'dominical' : 'ordinario',
+    domRec,
+    segmentos: segmentos.length,
+    horasDiurnas,
+    horasNocturnas,
+  };
 
   return {
     entrada: tsE, salida: tsS,
@@ -2274,6 +2343,10 @@ function recalcular() {
 
   // Hora ord tags
   document.getElementById('jornadaHorasTag').textContent = R.horas;
+  const hMesTag = document.getElementById('horasMesTag');
+  if (hMesTag) hMesTag.textContent = R.horas === 44
+    ? NOMINA_CONFIG.JORNADA.HORAS_MES_44
+    : NOMINA_CONFIG.JORNADA.HORAS_MES_42;
   document.getElementById('valorHoraOrd').textContent = $(R.horaOrd);
 
   // SMMLV ratio
@@ -2305,8 +2378,8 @@ function recalcular() {
   if (R.aplicaAux)      rowsIng += detRow(`Auxilio de transporte (${dias}/30)`, $(R.auxilio), 'Ley 15/1959', 'green');
   if (hED > 0)          rowsIng += detRow(`H. Extra Diurna (${hED}h × 1.25)`, $(R.vED), 'CST Art.168', 'green');
   if (hEN > 0)          rowsIng += detRow(`H. Extra Nocturna (${hEN}h × 1.75)`, $(R.vEN), 'CST Art.168', 'green');
-  if (hN  > 0)          rowsIng += detRow(`Recargo Nocturno (${hN}h × 0.35)`, $(R.vN), 'CST Art.168', 'green');
-  if (hD  > 0)          rowsIng += detRow(`Rec. Dominical/Festivo (${hD}h × 1.00) — Ley 2381`, $(R.vD), 'CST Art.179', 'green');
+  if (hN  > 0)          rowsIng += detRow(`Recargo Nocturno (${hN}h · +35% adicional s/HO)`, $(R.vN), 'CST Art.168', 'green');
+  if (hD  > 0)          rowsIng += detRow(`Rec. Dominical/Festivo (${hD}h × ${(1+R.domRecargo).toFixed(2)}) — Ley 2381`, $(R.vD), 'CST Art.179', 'green');
   document.getElementById('rows-ing').innerHTML = rowsIng;
   document.getElementById('aTotal-ing').textContent = $(R.devTotal);
 
@@ -2348,6 +2421,9 @@ function recalcular() {
   // Hero & topbar
   document.getElementById('heroNeto').textContent = $(R.neto);
   document.getElementById('chipJornada').textContent  = R.horas + 'h/sem';
+  // Pill dominical dinámico
+  const domPill = document.getElementById('domPill');
+  if (domPill) domPill.textContent = '+' + Math.round(R.domRecargo * 100) + '%';
 }
 
 function detRow(concepto, valor, ref, clase) {
@@ -2361,7 +2437,8 @@ function actualizarJornada() {
   const p = document.getElementById('periodo').value;
   const h = getJornadaHoras(p);
   document.getElementById('chipJornada').textContent = h + 'h/sem';
-  document.getElementById('chipJornada').className = 'meta-chip ' + (h === 42 ? 'active' : '');
+  // El chip verde 'active' marca la jornada actual vigente
+  document.getElementById('chipJornada').className = 'meta-chip active';
 }
 
 function usarSMMLV() {
@@ -2502,7 +2579,9 @@ function eliminarTurno(id) {
 ══════════════════════════════════════════════════════════════ */
 function renderTurnos() {
   const sal = +document.getElementById('salarioTurnos').value || NOMINA_CONFIG.SMMLV;
-  const horas = getJornadaHoras('2026-07');
+  // Usar el período activo del selector de liquidación para calcular la HO correcta
+  const periodoActual = document.getElementById('periodo')?.value || '2026-05';
+  const horas = getJornadaHoras(periodoActual);
   const horaOrd = horaOrdinaria(sal, horas);
   document.getElementById('horaOrdTurnos').textContent = $(horaOrd);
 
@@ -2556,24 +2635,27 @@ function renderTurnos() {
       const eDate = r.entrada;
       const sDate = r.salida;
       const diaSem = dias[eDate.getDay()];
-      const esDom  = esDomingo(eDate) || esDomingo(sDate);
-      const esFest = esFestivo(eDate) || esFestivo(sDate);
+      // Usar r.hayDomFest del análisis segmentado (correcto para turnos cruzando medianoche)
+      const esDom  = r.isDomFestE && esDomingo(eDate);
+      const esFest = r.isDomFestE && esFestivo(eDate);
+      const hayDF  = r.hayDomFest;
 
       let cardClass = 'turno-card';
-      if (esDom || esFest) cardClass += ' dominical';
+      if (hayDF) cardClass += ' dominical';
       else if (r.horasNocturnas > r.horasDiurnas) cardClass += ' nocturno-completo';
 
       let tags = '';
       if (r.horasDiurnas > 0)   tags += `<span class="t-tag tt-diurno">☀️ ${h2(r.horasDiurnas)}h diurnas</span>`;
       if (r.horasNocturnas > 0) tags += `<span class="t-tag tt-nocturno">🌙 ${h2(r.horasNocturnas)}h nocturnas</span>`;
-      if (esDom)  tags += `<span class="t-tag tt-domingo">Dom +100%</span>`;
-      if (esFest && !esDom) tags += `<span class="t-tag tt-festivo">Festivo +100%</span>`;
+      if (hayDF && esDomingo(eDate))  tags += `<span class="t-tag tt-domingo">Dom +${Math.round(r.desglose.domRec * 100)}%</span>`;
+      else if (hayDF && esFestivo(eDate) && !esDomingo(eDate)) tags += `<span class="t-tag tt-festivo">Festivo +${Math.round(r.desglose.domRec * 100)}%</span>`;
+      else if (hayDF) tags += `<span class="t-tag tt-domingo">Dom/Fest +${Math.round(r.desglose.domRec * 100)}%</span>`;
 
       html += `<div class="${cardClass}">
         <button class="turno-del-btn" onclick="eliminarTurno(${item.id})">✕</button>
         <div class="turno-fecha">
-          <div class="turno-dia-num ${(esDom||esFest)?'dom':''}">${eDate.getDate()}</div>
-          <div class="turno-dia-nom ${(esDom||esFest)?'dom':''}">${diaSem}</div>
+          <div class="turno-dia-num ${hayDF?'dom':''}">${eDate.getDate()}</div>
+          <div class="turno-dia-nom ${hayDF?'dom':''}">${diaSem}</div>
           <div style="font-size:0.6rem;color:var(--ink-300);margin-top:1px;">${ddmm(eDate)}</div>
         </div>
         <div class="turno-sep"></div>
@@ -2630,7 +2712,7 @@ function renderResumenTurnos(resultados, sal) {
       <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--emerald-600);font-weight:700;margin-bottom:4px;">Neto aprox. turnos (después deducciones 8%)</div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--emerald-700);">${$(netoT)}</div>
     </div>
-    ${nDom > 0 ? `<div style="font-size:0.75rem;color:var(--teal-600);margin-top:8px;">🟢 ${nDom} turno(s) con recargo dominical/festivo (100% — Ley 2381/2024)</div>` : ''}
+    ${nDom > 0 ? `<div style="font-size:0.75rem;color:var(--teal-600);margin-top:8px;">🟢 ${nDom} turno(s) con recargo dominical/festivo vigente (Ley 2381/2024)</div>` : ''}
   `;
 }
 
@@ -2683,7 +2765,8 @@ function generarPDF() {
   doc.text('Nómina · Colombia 2026 · Legislación CST + Ley 2381/2024', 14, 22);
   doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(200,200,255);
   doc.text(`Período: ${perLabel}`, 14, 33);
-  doc.text(`Jornada: ${R.horas}h/semana (Ley 2101/2021)`, W - 14, 33, { align:'right' });
+  const horasMesPDF = R.horas === 44 ? NOMINA_CONFIG.JORNADA.HORAS_MES_44 : NOMINA_CONFIG.JORNADA.HORAS_MES_42;
+  doc.text(`Jornada: ${R.horas}h/sem · ${horasMesPDF}h/mes · HO: ${$(R.horaOrd)} · Dom: +${Math.round(R.domRecargo*100)}%`, W - 14, 33, { align:'right' });
 
   let y = 48;
 
@@ -2723,8 +2806,8 @@ function generarPDF() {
   if(R.aplicaAux) ings.push(['Auxilio de transporte', $(R.auxilio), 'Ley 15/1959', 0,130,80]);
   if(hED>0) ings.push([`H. Extra Diurna (${hED}h × 1.25)`, $(R.vED), 'CST Art.168', 0,130,80]);
   if(hEN>0) ings.push([`H. Extra Nocturna (${hEN}h × 1.75)`, $(R.vEN), 'CST Art.168', 0,130,80]);
-  if(hN>0)  ings.push([`Rec. Nocturno (${hN}h × 0.35)`, $(R.vN), 'CST Art.168', 0,130,80]);
-  if(hD>0)  ings.push([`Rec. Dominical/Festivo (${hD}h × 1.00) — Ley 2381`, $(R.vD), 'CST Art.179', 0,130,80]);
+  if(hN>0)  ings.push([`Rec. Nocturno (${hN}h · +35% adicional s/HO)`, $(R.vN), 'CST Art.168', 0,130,80]);
+  if(hD>0)  ings.push([`Rec. Dominical/Festivo (${hD}h × ${(1+R.domRecargo).toFixed(2)}) — Ley 2381`, $(R.vD), 'CST Art.179', 0,130,80]);
   sec('INGRESOS SALARIALES', ings, 5,150,100);
 
   // Deducciones
@@ -2811,7 +2894,7 @@ function generarPDF() {
       doc.text(`${hhmm(r.entrada)} → ${hhmm(r.salida)}`, 50, ty+4.5);
       doc.text(h2(r.horasDiurnas)+'h', 100, ty+4.5);
       doc.text(h2(r.horasNocturnas)+'h', 128, ty+4.5);
-      doc.text(r.hayDomFest ? 'Sí +100%' : '—', 158, ty+4.5);
+      doc.text(r.hayDomFest ? `Sí +${Math.round(r.desglose.domRec * 100)}%` : '—', 158, ty+4.5);
       doc.setFont('helvetica','bold'); doc.setTextColor(0,120,60);
       doc.text($(r.valorTurno), W-13, ty+4.5, {align:'right'});
       ty += 6.5;
